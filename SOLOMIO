@@ -1,9 +1,7 @@
 local WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))()
-
 local Yellow = Color3.fromHex("#FFD21F")
 local DarkYellow = Color3.fromHex("#9C7800")
 local Black = Color3.fromHex("#080808")
-
 local Window = WindUI:CreateWindow({
     Title = "Chituk Hub",
     Icon = "rbxthumb://type=Asset&id=109365656627783&w=150&h=150",
@@ -28,17 +26,15 @@ local Window = WindUI:CreateWindow({
         ButtonsType = "Default"
     }
 })
-
 local MainSection = Window:Section({Title = "Main"})
 local ProteccionesSection = Window:Section({Title = "Protecciones"})
 local WeaponsSection = Window:Section({Title = "Armas"})
 local ESPSection = Window:Section({Title = "ESP"})
 local TPSection = Window:Section({Title = "TP"})
 local AimSection = Window:Section({Title = "AimBot"})
-local CrossHairSection = Window:Section({Title = "CrossHair"})
 local DiversionSection = Window:Section({Title = "Diversion"})
+local ConfiguracionesSection = Window:Section({Title = "Configuraciones"})
 local CreditsSection = Window:Section({Title = "Creditos"})
-
 local MainTab = MainSection:Tab({
     Title = "Main",
     Icon = "home",
@@ -46,25 +42,20 @@ local MainTab = MainSection:Tab({
     IconShape = "Square",
     Border = true
 })
-
 MainTab:Section({Title = "CHITUK HUB", TextSize = 24, FontWeight = Enum.FontWeight.SemiBold})
 MainTab:Section({Title = "Bienvenido a Chituk Hub", TextSize = 16, TextTransparency = 0.15})
-
 MainTab:Section({
     Title = "⚠️ ADVERTENCIA IMPORTANTE",
     TextSize = 18,
     TextColor = Color3.fromRGB(255, 50, 50)
 })
-
 MainTab:Section({
     Title = "¿Estás seguro que quieres usar este script?\nPodrías ser baneado de Prison Life al usarlo incorrectamente.",
     TextSize = 14,
     TextColor = Color3.fromRGB(255, 200, 200),
     TextTransparency = 0.1
 })
-
 local vflyGui = nil
-
 MainTab:Toggle({
     Title = "Vfly (Funciona Con Autos y tambien es un Fly Normal)",
     Default = false,
@@ -77,7 +68,6 @@ MainTab:Toggle({
             local PlayerGui = LocalPlayer:WaitForChild("PlayerGui", 10)
             local CurrentCamera = workspace.CurrentCamera
             local RunService = game:GetService("RunService")
-
             local u5 = false
             local FindFirstChild = PlayerGui.FindFirstChild
             local n1 = 1
@@ -87,11 +77,9 @@ MainTab:Toggle({
             end
             local ScreenGui = Instance.new("ScreenGui", PlayerGui)
             vflyGui = ScreenGui
-
             ScreenGui.Name = "ChitukHubFlyGui"
             ScreenGui.ResetOnSpawn = false
             local Frame = Instance.new("Frame", ScreenGui)
-
             Frame.Size = UDim2.new(0, 220, 0, 170)
             Frame.Position = UDim2.new(0.5, -110, 0.25, 0)
             Frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
@@ -100,9 +88,7 @@ MainTab:Toggle({
             Frame.Draggable = true
             Frame.ClipsDescendants = true
             Instance.new("UICorner", Frame).CornerRadius = UDim.new(0, 10)
-
             local TextLabel = Instance.new("TextLabel", Frame)
-
             TextLabel.Size = UDim2.new(1, 0, 0, 40)
             TextLabel.Position = UDim2.new(0, 0, 0, 0)
             TextLabel.Text = "Chituk Hub Fly Gui"
@@ -113,7 +99,6 @@ MainTab:Toggle({
             TextLabel.TextXAlignment = Enum.TextXAlignment.Center
             TextLabel.TextYAlignment = Enum.TextYAlignment.Center
             local TextButton = Instance.new("TextButton", Frame)
-
             TextButton.Size = UDim2.new(0, 30, 0, 30)
             TextButton.Position = UDim2.new(1, -35, 0, 5)
             TextButton.Text = "V"
@@ -124,9 +109,7 @@ MainTab:Toggle({
             TextButton.TextSize = 18
             TextButton.ZIndex = 2
             Instance.new("UICorner", TextButton).CornerRadius = UDim.new(0, 5)
-
             local TextBox = Instance.new("TextBox", Frame)
-
             TextBox.Size = UDim2.new(0, 70, 0, 60)
             TextBox.Position = UDim2.new(0, 75, 0, 45)
             TextBox.Text = "1"
@@ -137,9 +120,7 @@ MainTab:Toggle({
             TextBox.TextSize = 30
             TextBox.ClearTextOnFocus = false
             Instance.new("UICorner", TextBox)
-
             local TextButton2 = Instance.new("TextButton", Frame)
-
             TextButton2.Size = UDim2.new(0, 55, 0, 60)
             TextButton2.Position = UDim2.new(0, 15, 0, 45)
             TextButton2.Text = "-"
@@ -148,9 +129,7 @@ MainTab:Toggle({
             TextButton2.TextColor3 = Color3.new(1, 1, 1)
             TextButton2.TextSize = 40
             Instance.new("UICorner", TextButton2)
-
             local TextButton3 = Instance.new("TextButton", Frame)
-
             TextButton3.Size = UDim2.new(0, 55, 0, 60)
             TextButton3.Position = UDim2.new(0, 150, 0, 45)
             TextButton3.Text = "+"
@@ -159,9 +138,7 @@ MainTab:Toggle({
             TextButton3.TextColor3 = Color3.new(1, 1, 1)
             TextButton3.TextSize = 40
             Instance.new("UICorner", TextButton3)
-
             local TextButton4 = Instance.new("TextButton", Frame)
-
             TextButton4.Size = UDim2.new(1, -30, 0, 45)
             TextButton4.Position = UDim2.new(0, 15, 0, 115)
             TextButton4.Text = "Fly"
@@ -171,7 +148,6 @@ MainTab:Toggle({
             TextButton4.Font = Enum.Font.SourceSans
             TextButton4.TextSize = 35
             Instance.new("UICorner", TextButton4)
-
             TextButton.MouseButton1Click:Connect(function()
                 u8 = not u8
                 if u8 then
@@ -182,17 +158,14 @@ MainTab:Toggle({
                 Frame:TweenSize(UDim2.new(0, 220, 0, 170), Enum.EasingDirection.Out, Enum.EasingStyle.Quart, 0.3, true)
                 TextButton.Text = "V"
             end)
-
             TextButton3.MouseButton1Click:Connect(function()
-                n1 += 1
+                n1 = n1 + 1
                 TextBox.Text = tostring(n1)
             end)
-
             TextButton2.MouseButton1Click:Connect(function()
-                n1 -= 1
+                n1 = n1 - 1
                 TextBox.Text = tostring(n1)
             end)
-
             TextBox.FocusLost:Connect(function(_)
                 local num = tonumber(TextBox.Text)
                 if num then
@@ -201,7 +174,6 @@ MainTab:Toggle({
                 end
                 TextBox.Text = tostring(n1)
             end)
-
             local function v17(p2)
                 local vector3 = Vector3.new(0, 0, 0)
                 if p2 and p2:IsA("VehicleSeat") then
@@ -231,7 +203,6 @@ MainTab:Toggle({
                 end
                 return v34
             end
-
             TextButton4.MouseButton1Click:Connect(function()
                 u5 = not u5
                 TextButton4.Text = not u5 and "Fly" or "UnFly"
@@ -299,19 +270,15 @@ MainTab:Toggle({
         end
     end
 })
-
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
-
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local root = character:WaitForChild("HumanoidRootPart")
-
 local speedMultiplier = 4
 local speedEnabled = false
 local BASE_SPEED = 16
 local speedConnection
-
 local function activarVelocidad()
     if speedConnection then speedConnection:Disconnect() end
     speedConnection = RunService.RenderStepped:Connect(function(dt)
@@ -327,7 +294,6 @@ local function activarVelocidad()
         end
     end)
 end
-
 player.CharacterAdded:Connect(function(char)
     character = char
     root = char:WaitForChild("HumanoidRootPart")
@@ -335,7 +301,6 @@ player.CharacterAdded:Connect(function(char)
         activarVelocidad()
     end
 end)
-
 MainTab:Toggle({
     Title = "Activar Velocidad",
     Default = false,
@@ -349,7 +314,6 @@ MainTab:Toggle({
         end
     end
 })
-
 MainTab:Input({
     Title = "Velocidad (limite 300)",
     Default = "4",
@@ -361,11 +325,9 @@ MainTab:Input({
         end
     end
 })
-
 local UIS = game:GetService("UserInputService")
 local infiniteJumpEnabled = false
 local jumpConnection
-
 local function activarSaltoInfinito()
     if jumpConnection then jumpConnection:Disconnect() end
     jumpConnection = UIS.JumpRequest:Connect(function()
@@ -377,7 +339,6 @@ local function activarSaltoInfinito()
         end
     end)
 end
-
 MainTab:Toggle({
     Title = "Salto Infinito",
     Default = false,
@@ -391,7 +352,6 @@ MainTab:Toggle({
         end
     end
 })
-
 local Lighting = game:GetService("Lighting")
 local fullBrightEnabled = false
 local oldLighting = {
@@ -405,7 +365,6 @@ local oldLighting = {
     FogEnd = Lighting.FogEnd,
     FogStart = Lighting.FogStart
 }
-
 MainTab:Toggle({
     Title = "FullBright / Iluminacion Completa",
     Default = false,
@@ -434,13 +393,11 @@ MainTab:Toggle({
         end
     end
 })
-
 local fpsBoostEnabled = false
 local oldEffects = {}
 local oldMaterials = {}
 local oldShadows = {}
 local oldMaterialQuality = UserSettings():GetService("UserGameSettings").SavedQualityLevel
-
 local function desactivarEfectos()
     for _, effect in ipairs(Lighting:GetChildren()) do
         if effect:IsA("PostEffect") or effect:IsA("BlurEffect") or effect:IsA("BloomEffect")
@@ -450,7 +407,6 @@ local function desactivarEfectos()
             effect.Enabled = false
         end
     end
-
     for _, desc in ipairs(workspace:GetDescendants()) do
         if desc:IsA("BasePart") then
             oldMaterials[desc] = desc.Material
@@ -459,13 +415,10 @@ local function desactivarEfectos()
             desc.CastShadow = false
         end
     end
-
     UserSettings():GetService("UserGameSettings").SavedQualityLevel = Enum.SavedQualitySetting.QualityLevel1
-
     Lighting.GlobalShadows = false
     Lighting.ShadowSoftness = 1
 end
-
 local function restaurarEfectos()
     for effect, enabled in pairs(oldEffects) do
         if effect and effect.Parent then
@@ -473,27 +426,22 @@ local function restaurarEfectos()
         end
     end
     oldEffects = {}
-
     for part, material in pairs(oldMaterials) do
         if part and part.Parent then
             part.Material = material
         end
     end
     oldMaterials = {}
-
     for part, castShadow in pairs(oldShadows) do
         if part and part.Parent then
             part.CastShadow = castShadow
         end
     end
     oldShadows = {}
-
     UserSettings():GetService("UserGameSettings").SavedQualityLevel = oldMaterialQuality
-
     Lighting.GlobalShadows = oldLighting.GlobalShadows
     Lighting.ShadowSoftness = oldLighting.ShadowSoftness
 end
-
 MainTab:Toggle({
     Title = "FPS Boost",
     Default = false,
@@ -506,7 +454,6 @@ MainTab:Toggle({
         end
     end
 })
-
 MainTab:Button({
     Title = "Auto Escapar Prision",
     Description = "Teletransporta al contenedor y se suicida",
@@ -524,18 +471,14 @@ MainTab:Button({
         end
     end
 })
-
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local remote = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("GiverPressed")
-
 local RETRY_DELAY = 0.3
-
 local function getToolFromRS()
     local toolsFolder = ReplicatedStorage:FindFirstChild("Tools")
     if not toolsFolder then return end
     return toolsFolder:FindFirstChild("Key card", true)
 end
-
 local function getToolFromPlayers()
     for _, p in ipairs(Players:GetPlayers()) do
         if p ~= player then
@@ -547,7 +490,6 @@ local function getToolFromPlayers()
         end
     end
 end
-
 local function tryGiveKeycard()
     local backpack = player:WaitForChild("Backpack")
     if backpack:FindFirstChild("Key card") then
@@ -563,7 +505,6 @@ local function tryGiveKeycard()
     end
     return false
 end
-
 MainTab:Button({
     Title = "Auto Conseguir Keycard",
     Description = "Obtiene la keycard automaticamente",
@@ -590,15 +531,12 @@ MainTab:Button({
         end)
     end
 })
-
 local gunPositions = {
     ["Remington 870"] = CFrame.new(820.298583984375, 87.85000610351562, 2229.396240234375),
     ["MP5"] = CFrame.new(813.6986694335938, 87.85000610351562, 2229.396240234375),
     ["AK-47"] = CFrame.new(-931.7928466796875, 81.27831268310547, 2039.2554931640625),
 }
-
 local touchGiverCache = {}
-
 local function getTouchGiver(gunName)
     if touchGiverCache[gunName] then
         return touchGiverCache[gunName]
@@ -615,13 +553,11 @@ local function getTouchGiver(gunName)
     end
     return nil
 end
-
 local function hasGun(name)
     local backpack = player:FindFirstChild("Backpack")
     local char = player.Character or player.CharacterAdded:Wait()
     return (backpack and backpack:FindFirstChild(name)) or (char and char:FindFirstChild(name))
 end
-
 local function GetGun(gunName)
     local targetPos = gunPositions[gunName]
     if not targetPos then
@@ -674,7 +610,6 @@ local function GetGun(gunName)
     end
     return success
 end
-
 local function GrabAllGuns()
     local obtained = {}
     for _, gun in ipairs({"Remington 870", "MP5", "AK-47"}) do
@@ -691,7 +626,6 @@ local function GrabAllGuns()
         WindUI:Notify({Title = "Listo", Description = "Obtuviste " .. #obtained .. " arma(s)", Duration = 2})
     end
 end
-
 local ProteccionesTab = ProteccionesSection:Tab({
     Title = "Protecciones",
     Icon = "shield",
@@ -699,43 +633,33 @@ local ProteccionesTab = ProteccionesSection:Tab({
     IconShape = "Square",
     Border = true
 })
-
 ProteccionesTab:Section({Title = "PROTECCIONES", TextSize = 24, FontWeight = Enum.FontWeight.SemiBold})
 ProteccionesTab:Section({Title = "Anti Arrest y Anti Taser", TextSize = 16, TextTransparency = 0.15})
-
 local antiArrestEnabled = false
 local antiTaseEnabled = false
 local animConnection = nil
-
 local ARREST_ANIMATION = "rbxassetid://287112271"
 local TASE_ANIMATION = "rbxassetid://279227693"
-
 local function setupProtectionConnection()
     if animConnection then animConnection:Disconnect() end
-
     local function onCharacterAdded(char)
         local humanoid = char:WaitForChild("Humanoid")
         local animator = humanoid:WaitForChild("Animator")
-
         animator.AnimationPlayed:Connect(function(des)
             if antiArrestEnabled and des.Animation.AnimationId == ARREST_ANIMATION then
                 local Humanoid = player.Character:WaitForChild("Humanoid")
                 Humanoid:ChangeState(Enum.HumanoidStateType.Dead)
-
                 local cpos = char:WaitForChild("HumanoidRootPart").CFrame
                 local wasCriminal = (player.TeamColor.Name == "Really red")
-
                 player.CharacterAdded:Wait()
                 repeat task.wait() until player.Character:FindFirstChild("HumanoidRootPart")
                 task.wait(0.1)
-
                 if wasCriminal then
                     pcall(function()
                         player.Character.HumanoidRootPart.CFrame = cpos
                     end)
                 end
             end
-
             if antiTaseEnabled and des.Animation.AnimationId == TASE_ANIMATION then
                 des:Stop()
                 des:Destroy()
@@ -746,14 +670,11 @@ local function setupProtectionConnection()
             end
         end)
     end
-
     if player.Character then
         onCharacterAdded(player.Character)
     end
-
     animConnection = player.CharacterAdded:Connect(onCharacterAdded)
 end
-
 ProteccionesTab:Toggle({
     Title = "Anti Arrest",
     Default = false,
@@ -764,7 +685,6 @@ ProteccionesTab:Toggle({
         end
     end
 })
-
 ProteccionesTab:Toggle({
     Title = "Anti Taser",
     Default = false,
@@ -775,7 +695,6 @@ ProteccionesTab:Toggle({
         end
     end
 })
-
 local WeaponsTab = WeaponsSection:Tab({
     Title = "Armas",
     Icon = "gun",
@@ -783,9 +702,7 @@ local WeaponsTab = WeaponsSection:Tab({
     IconShape = "Square",
     Border = true
 })
-
 WeaponsTab:Section({Title = "Consigue Las Armas Disponibles De Una Manera mas facil", TextSize = 20, FontWeight = Enum.FontWeight.SemiBold})
-
 WeaponsTab:Button({
     Title = "Obtener Todas las Armas",
     Description = "TP automatico a todos los spawners",
@@ -793,12 +710,9 @@ WeaponsTab:Button({
         task.spawn(GrabAllGuns)
     end
 })
-
 WeaponsTab:Section({Title = "Seleccionar Arma Especifica", TextSize = 14, TextTransparency = 0.15})
-
 local allGuns = {"Remington 870", "MP5", "AK-47"}
 local selectedGun = allGuns[1]
-
 WeaponsTab:Dropdown({
     Title = "Arma",
     Values = allGuns,
@@ -807,7 +721,6 @@ WeaponsTab:Dropdown({
         selectedGun = value
     end
 })
-
 WeaponsTab:Button({
     Title = "Obtener Arma Seleccionada",
     Description = "TP al spawner del arma elegida",
@@ -819,7 +732,6 @@ WeaponsTab:Button({
         end
     end
 })
-
 local DiversionTab = DiversionSection:Tab({
     Title = "Diversion",
     Icon = "gamepad",
@@ -827,14 +739,11 @@ local DiversionTab = DiversionSection:Tab({
     IconShape = "Square",
     Border = true
 })
-
 DiversionTab:Section({Title = "DIVERSION", TextSize = 24, FontWeight = Enum.FontWeight.SemiBold})
 DiversionTab:Section({Title = "Funciones divertidas", TextSize = 16, TextTransparency = 0.15})
-
 local airWalkEnabled = false
 local airPart = nil
 local airWalkConnection
-
 local function createAirPart()
     if airPart then
         airPart:Destroy()
@@ -847,7 +756,6 @@ local function createAirPart()
     airPart.CanCollide = false
     airPart.Parent = workspace
 end
-
 local function startAirWalk()
     createAirPart()
     airWalkConnection = RunService.RenderStepped:Connect(function()
@@ -860,7 +768,6 @@ local function startAirWalk()
         end
     end)
 end
-
 local function stopAirWalk()
     if airWalkConnection then
         airWalkConnection:Disconnect()
@@ -871,7 +778,6 @@ local function stopAirWalk()
         airPart = nil
     end
 end
-
 DiversionTab:Toggle({
     Title = "Air Walk",
     Default = false,
@@ -884,30 +790,23 @@ DiversionTab:Toggle({
         end
     end
 })
-
 local FlipCooldown = false
 local frontFlipGui = nil
-
 local function FortniteFlips()
     if FlipCooldown then
         return
     end
-
     FlipCooldown = true
-
     local character = player.Character
     local hrp = character and character:FindFirstChild("HumanoidRootPart")
     local humanoid = character and character:FindFirstChildOfClass("Humanoid")
     local animator = humanoid and humanoid:FindFirstChildOfClass("Animator")
     local animate = character and character:FindFirstChild("Animate")
-
     if not hrp or not humanoid then
         FlipCooldown = false
         return
     end
-
     local savedTracks = {}
-
     if animator then
         for _, track in ipairs(animator:GetPlayingAnimationTracks()) do
             savedTracks[#savedTracks + 1] = {
@@ -916,45 +815,33 @@ local function FortniteFlips()
                 speed = track.Speed,
                 weight = track.WeightCurrent
             }
-
             track:Stop(0)
         end
     end
-
     local animateWasEnabled = animate and animate.Enabled
-
     if animate then
         animate.Enabled = false
     end
-
     local oldAutoRotate = humanoid.AutoRotate
     humanoid.AutoRotate = false
-
     humanoid:ChangeState(Enum.HumanoidStateType.Physics)
-
     local duration = 0.45
     local steps = 120
-
     local startCFrame = hrp.CFrame
     local forwardVector = startCFrame.LookVector
     local upVector = Vector3.new(0, 1, 0)
-
     task.spawn(function()
         local startTime = tick()
-
         for i = 1, steps do
             if not character.Parent or humanoid.Health <= 0 then
                 break
             end
-
             local t = i / steps
             local height = 4 * (t - t ^ 2) * 10
-
             local nextPos =
                 startCFrame.Position
                 + forwardVector * (35 * t)
                 + upVector * height
-
             local rotation =
                 startCFrame.Rotation
                 * CFrame.Angles(
@@ -962,37 +849,26 @@ local function FortniteFlips()
                     0,
                     0
                 )
-
             hrp.CFrame = CFrame.new(nextPos) * rotation
-
             local elapsedTime = tick() - startTime
             local expectedTime = (duration / steps) * i
             local waitTime = expectedTime - elapsedTime
-
             if waitTime > 0 then
                 task.wait(waitTime)
             end
         end
-
         if character.Parent and humanoid.Health > 0 then
             hrp.CFrame =
                 CFrame.new(startCFrame.Position + forwardVector * 35)
                 * startCFrame.Rotation
-
             humanoid.AutoRotate = oldAutoRotate
-
             if animate then
                 animate.Enabled = animateWasEnabled ~= false
             end
-
             humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
-
             task.wait(0.05)
-
             humanoid:ChangeState(Enum.HumanoidStateType.Running)
-
             task.wait(0.1)
-
             if animator then
                 for _, data in ipairs(savedTracks) do
                     if data.track and data.track.Parent then
@@ -1002,39 +878,32 @@ local function FortniteFlips()
                                 data.weight,
                                 data.speed
                             )
-
                             data.track.TimePosition = data.time
                         end)
                     end
                 end
             end
         end
-
         task.wait(0.25)
         FlipCooldown = false
     end)
 end
-
 local function createFrontFlipGui()
     if frontFlipGui then
         frontFlipGui:Destroy()
     end
-
     local UserInputService = game:GetService("UserInputService")
-
     local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Name = "ChitukHubFrontFlip"
     ScreenGui.ResetOnSpawn = false
     ScreenGui.Parent = game:GetService("CoreGui")
     frontFlipGui = ScreenGui
-
     local Main = Instance.new("Frame")
     Main.Size = UDim2.new(0, 160, 0, 85)
     Main.Position = UDim2.new(0.5, -80, 0.75, 0)
     Main.BackgroundTransparency = 1
     Main.Active = true
     Main.Parent = ScreenGui
-
     local Title = Instance.new("TextLabel")
     Title.Size = UDim2.new(1, 0, 0, 25)
     Title.Position = UDim2.new(0, 0, 0, 0)
@@ -1045,7 +914,6 @@ local function createFrontFlipGui()
     Title.TextSize = 14
     Title.Font = Enum.Font.GothamMedium
     Title.Parent = Main
-
     local Button = Instance.new("TextButton")
     Button.Size = UDim2.new(0, 140, 0, 50)
     Button.Position = UDim2.new(0.5, -70, 0, 30)
@@ -1057,23 +925,18 @@ local function createFrontFlipGui()
     Button.Font = Enum.Font.GothamBold
     Button.AutoButtonColor = true
     Button.Parent = Main
-
     local Corner = Instance.new("UICorner")
     Corner.CornerRadius = UDim.new(0, 8)
     Corner.Parent = Button
-
     local dragging = false
     local dragStart
     local startPos
-
     Main.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1
             or input.UserInputType == Enum.UserInputType.Touch then
-
             dragging = true
             dragStart = input.Position
             startPos = Main.Position
-
             input.Changed:Connect(function()
                 if input.UserInputState == Enum.UserInputState.End then
                     dragging = false
@@ -1081,17 +944,13 @@ local function createFrontFlipGui()
             end)
         end
     end)
-
     UserInputService.InputChanged:Connect(function(input)
         if not dragging then
             return
         end
-
         if input.UserInputType == Enum.UserInputType.MouseMovement
             or input.UserInputType == Enum.UserInputType.Touch then
-
             local delta = input.Position - dragStart
-
             Main.Position = UDim2.new(
                 startPos.X.Scale,
                 startPos.X.Offset + delta.X,
@@ -1100,12 +959,10 @@ local function createFrontFlipGui()
             )
         end
     end)
-
     Button.Activated:Connect(function()
         FortniteFlips()
     end)
 end
-
 local frontFlipToggle
 frontFlipToggle = DiversionTab:Toggle({
     Title = "FrontFlip",
@@ -1121,16 +978,13 @@ frontFlipToggle = DiversionTab:Toggle({
         end
     end
 })
-
 local botActivo = false
 local botConexiones = {}
 local botHilos = {}
-
 local function toggleBot(value)
     if value then
         if botActivo then return end
         botActivo = true
-
         local sujetos = {
             "Yo", "Tú", "Él", "Ella", "Nosotros", "Ellos", "Mis amigos",
             "Mi equipo", "El juego", "El mapa", "Los jugadores",
@@ -1171,7 +1025,6 @@ local function toggleBot(value)
             "¡Intentaré de Nuevo!",
             "¡La Muerte No Acabará Con Mi Aventura Infinita!"
         }
-
         local function generarFrase()
             local s = sujetos[math.random(#sujetos)]
             local v = verbos[math.random(#verbos)]
@@ -1183,7 +1036,6 @@ local function toggleBot(value)
                 return s .. " " .. v .. " " .. o
             end
         end
-
         local function obtenerFrase()
             if math.random() < 0.25 then
                 return frasesHechas[math.random(#frasesHechas)]
@@ -1191,12 +1043,10 @@ local function toggleBot(value)
                 return generarFrase()
             end
         end
-
         local replicatedStorage = game:GetService("ReplicatedStorage")
         local chatEvent = replicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
         if chatEvent then chatEvent = chatEvent:FindFirstChild("SayMessageRequest") end
         local chatService = game:GetService("Chat")
-
         local function hablar(mensaje)
             if chatEvent then
                 chatEvent:FireServer(mensaje, "All")
@@ -1210,7 +1060,6 @@ local function toggleBot(value)
                 end
             end
         end
-
         local function obtenerPosicionAleatoria(raiz)
             local centro = raiz and raiz.Position or Vector3.new(0, 0, 0)
             local radio = 45
@@ -1221,20 +1070,16 @@ local function toggleBot(value)
             local y = raiz and raiz.Position.Y or 0
             return Vector3.new(x, y, z)
         end
-
         local yaDichoMuerte = false
         local destinoActual = nil
         local tiempoSalto = 0
         local INTERVALO_SALTO = 4.5
-
         local function obtenerPersonaje()
             local char = player.Character or player.CharacterAdded:Wait()
             local hum = char:FindFirstChildOfClass("Humanoid")
             return char, hum
         end
-
         local char, hum = obtenerPersonaje()
-
         local function onDied()
             if not botActivo then return end
             if not yaDichoMuerte then
@@ -1243,11 +1088,9 @@ local function toggleBot(value)
                 hablar(frase)
             end
         end
-
         if hum then
             hum.Died:Connect(onDied)
         end
-
         local charAddedConn = player.CharacterAdded:Connect(function(newChar)
             char = newChar
             hum = char:WaitForChild("Humanoid")
@@ -1256,7 +1099,6 @@ local function toggleBot(value)
             hum.Died:Connect(onDied)
         end)
         table.insert(botConexiones, charAddedConn)
-
         local function elegirNuevoDestino()
             local raiz = char:FindFirstChild("HumanoidRootPart")
             if raiz then
@@ -1264,7 +1106,6 @@ local function toggleBot(value)
                 hum:MoveTo(destinoActual)
             end
         end
-
         local hiloMov = task.spawn(function()
             while botActivo do
                 task.wait(0.3)
@@ -1304,7 +1145,6 @@ local function toggleBot(value)
             end
         end)
         table.insert(botHilos, hiloMov)
-
         local hiloHablar = task.spawn(function()
             while botActivo do
                 task.wait(10 + math.random(0, 3))
@@ -1314,7 +1154,6 @@ local function toggleBot(value)
             end
         end)
         table.insert(botHilos, hiloHablar)
-
     else
         botActivo = false
         for _, conn in ipairs(botConexiones) do
@@ -1327,7 +1166,6 @@ local function toggleBot(value)
         botHilos = {}
     end
 end
-
 DiversionTab:Toggle({
     Title = "Bot Te mueves solo y Dices Cosas al azar",
     Default = false,
@@ -1335,7 +1173,6 @@ DiversionTab:Toggle({
         toggleBot(value)
     end
 })
-
 local ESPTab = ESPSection:Tab({
     Title = "ESP",
     Icon = "eye",
@@ -1343,10 +1180,8 @@ local ESPTab = ESPSection:Tab({
     IconShape = "Square",
     Border = true
 })
-
 ESPTab:Section({Title = "ESP", TextSize = 24, FontWeight = Enum.FontWeight.SemiBold})
 ESPTab:Section({Title = "Opciones de ESP", TextSize = 16, TextTransparency = 0.15})
-
 local LugaresTP = {
     ["Spawn Neutral"] = CFrame.new(879.2, 36.09, 2349.8),
     ["Bloque de Celdas"] = CFrame.new(918.9735107421875, 99.98998260498047, 2451.423583984375),
@@ -1504,7 +1339,6 @@ TPTab:Button({
         end
     end
 })
-
 local AimTab = AimSection:Tab({
     Title = "AimBot",
     Icon = "crosshair",
@@ -1512,225 +1346,28 @@ local AimTab = AimSection:Tab({
     IconShape = "Square",
     Border = true
 })
-
 AimTab:Section({Title = "AIMBOT", TextSize = 24, FontWeight = Enum.FontWeight.SemiBold})
 AimTab:Section({Title = "Opciones de AimBot", TextSize = 16, TextTransparency = 0.15})
-
 local Camera = workspace.CurrentCamera
-
 local aimbotEnabled = false
 local fov = 80
 local teamCheck = false
 local killCheck = false
 local wallCheck = false
 local targetPartName = "Head"
-
 local circle = Drawing.new("Circle")
 circle.Thickness = 1.5
 circle.Color = Color3.fromRGB(255, 255, 255)
 circle.Filled = false
 circle.Visible = false
-
-local function findBestTarget()
-    local bestDist = 1e999
-    local bestPlayer = nil
-    local center = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
-    for _, targetPlayer in pairs(Players:GetPlayers()) do
-        if targetPlayer == player then continue end
-        local targetCharacter = targetPlayer.Character
-        if not targetCharacter then continue end
-        local targetPart = targetCharacter:FindFirstChild(targetPartName)
-        if not targetPart then continue end
-        if teamCheck and targetPlayer.Team == player.Team then continue end
-        local targetHumanoid = targetCharacter:FindFirstChildOfClass("Humanoid")
-        if killCheck and (not targetHumanoid or targetHumanoid.Health <= 0) then continue end
-        if wallCheck then
-            local origin = Camera.CFrame.Position
-            local direction = (targetPart.Position - origin).Unit * 500
-            local params = RaycastParams.new()
-            params.FilterType = Enum.RaycastFilterType.Blacklist
-            params.FilterDescendantsInstances = { player.Character }
-            local result = workspace:Raycast(origin, direction, params)
-            if result and not targetCharacter:IsAncestorOf(result.Instance) then
-                continue
-            end
-        end
-        local screenPos, onScreen = Camera:WorldToViewportPoint(targetPart.Position)
-        if onScreen then
-            local dist = (Vector2.new(screenPos.X, screenPos.Y) - center).Magnitude
-            if dist < fov and dist < bestDist then
-                bestDist = dist
-                bestPlayer = targetPlayer
-            end
-        end
-    end
-    return bestPlayer
-end
-
-RunService:BindToRenderStep("AimbotRender", Enum.RenderPriority.Camera.Value + 1, function()
-    local center = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
-    circle.Position = center
-    circle.Radius = fov
-    circle.Visible = aimbotEnabled
-    if aimbotEnabled then
-        local target = findBestTarget()
-        if target and target.Character and target.Character:FindFirstChild(targetPartName) then
-            Camera.CFrame = CFrame.new(Camera.CFrame.Position, target.Character[targetPartName].Position)
-        end
-    end
-end)
-
-AimTab:Toggle({
-    Title = "Activar AimBot",
-    Default = false,
-    Callback = function(value)
-        aimbotEnabled = value
-    end
-})
-
-AimTab:Input({
-    Title = "FOV (rango 10-300)",
-    Default = "80",
-    Numeric = true,
-    Callback = function(value)
-        local num = tonumber(value)
-        if num then
-            num = math.clamp(num, 10, 300)
-            fov = num
-        end
-    end
-})
-
-AimTab:Toggle({
-    Title = "Ignorar compañeros de equipo",
-    Default = false,
-    Callback = function(value)
-        teamCheck = value
-    end
-})
-
-AimTab:Toggle({
-    Title = "Ignorar jugadores muertos",
-    Default = false,
-    Callback = function(value)
-        killCheck = value
-    end
-})
-
-AimTab:Toggle({
-    Title = "Ignorar detrás de paredes",
-    Default = false,
-    Callback = function(value)
-        wallCheck = value
-    end
-})
-
-AimTab:Dropdown({
-    Title = "Parte del cuerpo",
-    Values = { "Head", "Torso", "HumanoidRootPart", "LeftLeg", "RightLeg" },
-    Default = "Head",
-    Callback = function(value)
-        targetPartName = value
-    end
-})
-
--- =========================== SECCIÓN CROSSHAIR ===========================
-local CrossHairTab = CrossHairSection:Tab({
-    Title = "CrossHair",
-    Icon = "crosshair",
-    IconColor = Yellow,
-    IconShape = "Square",
-    Border = true
-})
-
-CrossHairTab:Section({Title = "CROSSHAIR (MIRA)", TextSize = 24, FontWeight = Enum.FontWeight.SemiBold})
-CrossHairTab:Section({Title = "Activa una mira en el centro de la pantalla", TextSize = 16, TextTransparency = 0.15})
-
-local crosshairGui = nil
-local crosshairImage = nil
-local crosshairEnabled = false
-local selectedStyle = "7905983439"  -- ID por defecto (el primero)
-
-local crosshairStyles = {
-    "7905983439",
-    "11351620355",
-    "749187669",
-    "5998624778",
-    "3750055370",
-    "5998624788"
-}
-
-local function createCrosshair()
-    if crosshairGui then
-        crosshairGui:Destroy()
-        crosshairGui = nil
-        crosshairImage = nil
-    end
-
-    local playerGui = player:WaitForChild("PlayerGui")
-    crosshairGui = Instance.new("ScreenGui")
-    crosshairGui.Name = "ChitukHubCrosshair"
-    crosshairGui.ResetOnSpawn = false
-    crosshairGui.Parent = playerGui
-
-    crosshairImage = Instance.new("ImageLabel")
-    crosshairImage.Size = UDim2.new(0, 80, 0, 80)  -- Tamaño ajustable
-    crosshairImage.Position = UDim2.new(0.5, -40, 0.5, -40)
-    crosshairImage.BackgroundTransparency = 1
-    crosshairImage.Image = "rbxassetid://" .. selectedStyle
-    crosshairImage.Parent = crosshairGui
-end
-
-local function updateCrosshairStyle(styleId)
-    selectedStyle = styleId
-    if crosshairImage then
-        crosshairImage.Image = "rbxassetid://" .. styleId
-    end
-end
-
-local function toggleCrosshair(value)
-    crosshairEnabled = value
-    if value then
-        if not crosshairGui then
-            createCrosshair()
-        end
-        crosshairGui.Enabled = true
-    else
-        if crosshairGui then
-            crosshairGui.Enabled = false
-        end
-    end
-end
-
-CrossHairTab:Toggle({
-    Title = "CrossHair (Mira)",
-    Default = false,
-    Callback = function(value)
-        toggleCrosshair(value)
-    end
-})
-
-CrossHairTab:Dropdown({
-    Title = "Estilo de Mira",
-    Values = crosshairStyles,
-    Default = crosshairStyles[1],
-    Callback = function(value)
-        updateCrosshairStyle(value)
-    end
-})
-
--- =========================== FIN SECCIÓN CROSSHAIR ===========================
-
 local espEnabled = false
 local showNames = false
 local showTracers = false
 local teamColors = true
-
 local highlightList = {}
 local nameTexts = {}
 local tracerLines = {}
 local connections = {}
-
 local function getPlayerColor(targetPlayer)
     if not teamColors then
         return Color3.fromRGB(255, 0, 0)
@@ -1741,7 +1378,6 @@ local function getPlayerColor(targetPlayer)
         return Color3.fromRGB(255, 0, 0)
     end
 end
-
 local function applyHighlight(targetPlayer)
     if targetPlayer == player then return end
     local targetCharacter = targetPlayer.Character
@@ -1755,7 +1391,6 @@ local function applyHighlight(targetPlayer)
     highlight.Parent = targetCharacter
     highlightList[targetPlayer] = highlight
 end
-
 local function removeHighlight(targetPlayer)
     local highlight = highlightList[targetPlayer]
     if highlight then
@@ -1763,14 +1398,12 @@ local function removeHighlight(targetPlayer)
         highlightList[targetPlayer] = nil
     end
 end
-
 local function clearAllHighlights()
     for targetPlayer, highlight in pairs(highlightList) do
         highlight:Destroy()
     end
     highlightList = {}
 end
-
 local function createNameText(targetPlayer)
     if nameTexts[targetPlayer] then return end
     local text = Drawing.new("Text")
@@ -1783,7 +1416,6 @@ local function createNameText(targetPlayer)
     text.Visible = false
     nameTexts[targetPlayer] = text
 end
-
 local function removeNameText(targetPlayer)
     local text = nameTexts[targetPlayer]
     if text then
@@ -1791,7 +1423,6 @@ local function removeNameText(targetPlayer)
         nameTexts[targetPlayer] = nil
     end
 end
-
 local function createTracer(targetPlayer)
     if tracerLines[targetPlayer] then return end
     local line = Drawing.new("Line")
@@ -1801,7 +1432,6 @@ local function createTracer(targetPlayer)
     line.Visible = false
     tracerLines[targetPlayer] = line
 end
-
 local function removeTracer(targetPlayer)
     local line = tracerLines[targetPlayer]
     if line then
@@ -1809,7 +1439,6 @@ local function removeTracer(targetPlayer)
         tracerLines[targetPlayer] = nil
     end
 end
-
 local function clearAllDrawings()
     for targetPlayer in pairs(nameTexts) do
         removeNameText(targetPlayer)
@@ -1818,14 +1447,12 @@ local function clearAllDrawings()
         removeTracer(targetPlayer)
     end
 end
-
 local function disconnectAll()
     for _, conn in pairs(connections) do
         conn:Disconnect()
     end
     connections = {}
 end
-
 local function updateESP()
     local viewport = Camera.ViewportSize
     local centerBottom = Vector2.new(viewport.X / 2, viewport.Y)
@@ -1892,7 +1519,6 @@ local function updateESP()
         end
     end
 end
-
 local function setupESP()
     clearAllHighlights()
     clearAllDrawings()
@@ -1934,14 +1560,461 @@ local function setupESP()
     end
     RunService:BindToRenderStep("ESPRender", Enum.RenderPriority.Camera.Value, updateESP)
 end
-
 local function disableESP()
     clearAllHighlights()
     clearAllDrawings()
     disconnectAll()
     RunService:UnbindFromRenderStep("ESPRender")
 end
-
+local function findBestTarget()
+    local bestDist = 1e999
+    local bestPlayer = nil
+    local center = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
+    for _, targetPlayer in pairs(Players:GetPlayers()) do
+        if targetPlayer == player then continue end
+        local targetCharacter = targetPlayer.Character
+        if not targetCharacter then continue end
+        local targetPart = targetCharacter:FindFirstChild(targetPartName)
+        if not targetPart then continue end
+        if teamCheck and targetPlayer.Team == player.Team then continue end
+        local targetHumanoid = targetCharacter:FindFirstChildOfClass("Humanoid")
+        if killCheck and (not targetHumanoid or targetHumanoid.Health <= 0) then continue end
+        if wallCheck then
+            local origin = Camera.CFrame.Position
+            local direction = (targetPart.Position - origin).Unit * 500
+            local params = RaycastParams.new()
+            params.FilterType = Enum.RaycastFilterType.Blacklist
+            params.FilterDescendantsInstances = { player.Character }
+            local result = workspace:Raycast(origin, direction, params)
+            if result and not targetCharacter:IsAncestorOf(result.Instance) then
+                continue
+            end
+        end
+        local screenPos, onScreen = Camera:WorldToViewportPoint(targetPart.Position)
+        if onScreen then
+            local dist = (Vector2.new(screenPos.X, screenPos.Y) - center).Magnitude
+            if dist < fov and dist < bestDist then
+                bestDist = dist
+                bestPlayer = targetPlayer
+            end
+        end
+    end
+    return bestPlayer
+end
+RunService:BindToRenderStep("AimbotRender", Enum.RenderPriority.Camera.Value + 1, function()
+    local center = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
+    circle.Position = center
+    circle.Radius = fov
+    circle.Visible = aimbotEnabled
+    if aimbotEnabled then
+        local target = findBestTarget()
+        if target and target.Character and target.Character:FindFirstChild(targetPartName) then
+            Camera.CFrame = CFrame.new(Camera.CFrame.Position, target.Character[targetPartName].Position)
+        end
+    end
+end)
+local ConfiguracionesTab = ConfiguracionesSection:Tab({
+    Title = "Configuraciones",
+    Icon = "settings",
+    IconColor = Yellow,
+    IconShape = "Square",
+    Border = true
+})
+ConfiguracionesTab:Section({Title = "CONFIGURACIONES", TextSize = 24, FontWeight = Enum.FontWeight.SemiBold})
+ConfiguracionesTab:Section({Title = "Sistema de guardado JSON para ESP y mas", TextSize = 16, TextTransparency = 0.15})
+local HttpService = game:GetService("HttpService")
+local CONFIG_FOLDER = "ChitukHub"
+local CONFIG_FILE = CONFIG_FOLDER .. "/configuraciones.json"
+local configuracionesGuardadas = {}
+local perfilSeleccionado = ""
+local listaPerfiles = {}
+local function tieneFuncionesArchivo()
+    return isfile and writefile and readfile and delfile and isfolder and makefolder
+end
+local function cargarConfiguracionesDesdeArchivo()
+    if not tieneFuncionesArchivo() then return end
+    if not isfolder(CONFIG_FOLDER) then
+        makefolder(CONFIG_FOLDER)
+    end
+    if isfile(CONFIG_FILE) then
+        local exito, datos = pcall(function()
+            return HttpService:JSONDecode(readfile(CONFIG_FILE))
+        end)
+        if exito and type(datos) == "table" then
+            configuracionesGuardadas = datos
+        end
+    end
+end
+local function guardarConfiguracionesEnArchivo()
+    if not tieneFuncionesArchivo() then return end
+    if not isfolder(CONFIG_FOLDER) then
+        makefolder(CONFIG_FOLDER)
+    end
+    pcall(function()
+        writefile(CONFIG_FILE, HttpService:JSONEncode(configuracionesGuardadas))
+    end)
+end
+local function actualizarListaPerfiles()
+    listaPerfiles = {}
+    for nombre in pairs(configuracionesGuardadas) do
+        table.insert(listaPerfiles, nombre)
+    end
+    table.sort(listaPerfiles)
+    return listaPerfiles
+end
+local function obtenerConfiguracionActual()
+    return {
+        ESP = {
+            espEnabled = espEnabled,
+            showNames = showNames,
+            showTracers = showTracers,
+            teamColors = teamColors
+        },
+        AimBot = {
+            aimbotEnabled = aimbotEnabled,
+            fov = fov,
+            teamCheck = teamCheck,
+            killCheck = killCheck,
+            wallCheck = wallCheck,
+            targetPartName = targetPartName
+        },
+        Main = {
+            speedEnabled = speedEnabled,
+            speedMultiplier = speedMultiplier,
+            infiniteJumpEnabled = infiniteJumpEnabled,
+            fullBrightEnabled = fullBrightEnabled,
+            fpsBoostEnabled = fpsBoostEnabled
+        },
+        Protecciones = {
+            antiArrestEnabled = antiArrestEnabled,
+            antiTaseEnabled = antiTaseEnabled
+        },
+        Diversion = {
+            airWalkEnabled = airWalkEnabled,
+            botActivo = botActivo
+        }
+    }
+end
+local function aplicarConfiguracion(config)
+    if not config then return end
+    if config.ESP then
+        if config.ESP.showNames ~= nil then
+            showNames = config.ESP.showNames
+        end
+        if config.ESP.showTracers ~= nil then
+            showTracers = config.ESP.showTracers
+        end
+        if config.ESP.teamColors ~= nil then
+            teamColors = config.ESP.teamColors
+        end
+        if config.ESP.espEnabled ~= nil then
+            if config.ESP.espEnabled and not espEnabled then
+                espEnabled = true
+                setupESP()
+            elseif not config.ESP.espEnabled and espEnabled then
+                espEnabled = false
+                disableESP()
+            end
+        end
+        if espEnabled then
+            for targetPlayer in pairs(nameTexts) do
+                if nameTexts[targetPlayer] then
+                    nameTexts[targetPlayer].Visible = showNames
+                end
+            end
+            for targetPlayer in pairs(tracerLines) do
+                if tracerLines[targetPlayer] then
+                    tracerLines[targetPlayer].Visible = showTracers
+                end
+            end
+            for targetPlayer in pairs(highlightList) do
+                if highlightList[targetPlayer] then
+                    highlightList[targetPlayer].FillColor = getPlayerColor(targetPlayer)
+                end
+                if nameTexts[targetPlayer] then
+                    nameTexts[targetPlayer].Color = getPlayerColor(targetPlayer)
+                end
+                if tracerLines[targetPlayer] then
+                    tracerLines[targetPlayer].Color = getPlayerColor(targetPlayer)
+                end
+            end
+        end
+    end
+    if config.AimBot then
+        if config.AimBot.fov ~= nil then
+            fov = config.AimBot.fov
+        end
+        if config.AimBot.teamCheck ~= nil then
+            teamCheck = config.AimBot.teamCheck
+        end
+        if config.AimBot.killCheck ~= nil then
+            killCheck = config.AimBot.killCheck
+        end
+        if config.AimBot.wallCheck ~= nil then
+            wallCheck = config.AimBot.wallCheck
+        end
+        if config.AimBot.targetPartName ~= nil then
+            targetPartName = config.AimBot.targetPartName
+        end
+        if config.AimBot.aimbotEnabled ~= nil then
+            aimbotEnabled = config.AimBot.aimbotEnabled
+        end
+    end
+    if config.Main then
+        if config.Main.speedMultiplier ~= nil then
+            speedMultiplier = config.Main.speedMultiplier
+        end
+        if config.Main.infiniteJumpEnabled ~= nil then
+            infiniteJumpEnabled = config.Main.infiniteJumpEnabled
+            if infiniteJumpEnabled then
+                activarSaltoInfinito()
+            elseif jumpConnection then
+                jumpConnection:Disconnect()
+                jumpConnection = nil
+            end
+        end
+        if config.Main.fullBrightEnabled ~= nil then
+            fullBrightEnabled = config.Main.fullBrightEnabled
+            if fullBrightEnabled then
+                Lighting.Brightness = 3
+                Lighting.Ambient = Color3.fromRGB(255, 255, 255)
+                Lighting.OutdoorAmbient = Color3.fromRGB(255, 255, 255)
+                Lighting.ColorShift_Top = Color3.fromRGB(255, 255, 255)
+                Lighting.ColorShift_Bottom = Color3.fromRGB(255, 255, 255)
+                Lighting.ShadowSoftness = 1
+                Lighting.GlobalShadows = false
+                Lighting.FogEnd = 100000
+                Lighting.FogStart = 100000
+            else
+                Lighting.Brightness = oldLighting.Brightness
+                Lighting.Ambient = oldLighting.Ambient
+                Lighting.OutdoorAmbient = oldLighting.OutdoorAmbient
+                Lighting.ColorShift_Top = oldLighting.ColorShift_Top
+                Lighting.ColorShift_Bottom = oldLighting.ColorShift_Bottom
+                Lighting.ShadowSoftness = oldLighting.ShadowSoftness
+                Lighting.GlobalShadows = oldLighting.GlobalShadows
+                Lighting.FogEnd = oldLighting.FogEnd
+                Lighting.FogStart = oldLighting.FogStart
+            end
+        end
+        if config.Main.fpsBoostEnabled ~= nil then
+            fpsBoostEnabled = config.Main.fpsBoostEnabled
+            if fpsBoostEnabled then
+                desactivarEfectos()
+            else
+                restaurarEfectos()
+            end
+        end
+        if config.Main.speedEnabled ~= nil then
+            speedEnabled = config.Main.speedEnabled
+            if speedEnabled then
+                activarVelocidad()
+            elseif speedConnection then
+                speedConnection:Disconnect()
+                speedConnection = nil
+            end
+        end
+    end
+    if config.Protecciones then
+        if config.Protecciones.antiArrestEnabled ~= nil then
+            antiArrestEnabled = config.Protecciones.antiArrestEnabled
+        end
+        if config.Protecciones.antiTaseEnabled ~= nil then
+            antiTaseEnabled = config.Protecciones.antiTaseEnabled
+        end
+        if (antiArrestEnabled or antiTaseEnabled) and not animConnection then
+            setupProtectionConnection()
+        end
+    end
+    if config.Diversion then
+        if config.Diversion.airWalkEnabled ~= nil then
+            airWalkEnabled = config.Diversion.airWalkEnabled
+            if airWalkEnabled then
+                startAirWalk()
+            else
+                stopAirWalk()
+            end
+        end
+        if config.Diversion.botActivo ~= nil then
+            toggleBot(config.Diversion.botActivo)
+        end
+    end
+end
+cargarConfiguracionesDesdeArchivo()
+actualizarListaPerfiles()
+if #listaPerfiles > 0 then
+    perfilSeleccionado = listaPerfiles[1]
+end
+local dropdownPerfiles = ConfiguracionesTab:Dropdown({
+    Title = "Perfiles Guardados",
+    Values = listaPerfiles,
+    Default = perfilSeleccionado,
+    Callback = function(value)
+        perfilSeleccionado = value
+    end
+})
+local inputNombrePerfil = ConfiguracionesTab:Input({
+    Title = "Nombre del perfil",
+    Default = "MiPerfil",
+    Callback = function(value)
+    end
+})
+ConfiguracionesTab:Button({
+    Title = "Crear / Guardar perfil",
+    Description = "Guarda la configuracion actual con el nombre escrito",
+    Callback = function()
+        local nombre = inputNombrePerfil.Value or inputNombrePerfil._value or ""
+        if type(nombre) ~= "string" or nombre == "" then
+            nombre = "MiPerfil"
+        end
+        configuracionesGuardadas[nombre] = obtenerConfiguracionActual()
+        guardarConfiguracionesEnArchivo()
+        actualizarListaPerfiles()
+        perfilSeleccionado = nombre
+        dropdownPerfiles:Refresh(listaPerfiles, perfilSeleccionado)
+        WindUI:Notify({Title = "Guardado", Description = "Perfil '" .. nombre .. "' guardado correctamente", Duration = 2})
+    end
+})
+ConfiguracionesTab:Button({
+    Title = "Cargar perfil seleccionado",
+    Description = "Aplica la configuracion del perfil elegido",
+    Callback = function()
+        if perfilSeleccionado == "" or not configuracionesGuardadas[perfilSeleccionado] then
+            WindUI:Notify({Title = "Error", Description = "Selecciona un perfil valido primero", Duration = 2})
+            return
+        end
+        aplicarConfiguracion(configuracionesGuardadas[perfilSeleccionado])
+        WindUI:Notify({Title = "Cargado", Description = "Perfil '" .. perfilSeleccionado .. "' aplicado correctamente", Duration = 2})
+    end
+})
+ConfiguracionesTab:Button({
+    Title = "Borrar perfil seleccionado",
+    Description = "Elimina permanentemente el perfil elegido",
+    Callback = function()
+        if perfilSeleccionado == "" or not configuracionesGuardadas[perfilSeleccionado] then
+            WindUI:Notify({Title = "Error", Description = "Selecciona un perfil valido primero", Duration = 2})
+            return
+        end
+        local nombreBorrar = perfilSeleccionado
+        configuracionesGuardadas[nombreBorrar] = nil
+        guardarConfiguracionesEnArchivo()
+        actualizarListaPerfiles()
+        if #listaPerfiles > 0 then
+            perfilSeleccionado = listaPerfiles[1]
+        else
+            perfilSeleccionado = ""
+        end
+        dropdownPerfiles:Refresh(listaPerfiles, perfilSeleccionado)
+        WindUI:Notify({Title = "Borrado", Description = "Perfil '" .. nombreBorrar .. "' eliminado correctamente", Duration = 2})
+    end
+})
+ConfiguracionesTab:Button({
+    Title = "Actualizar lista de perfiles",
+    Description = "Refresca la lista desde el archivo JSON",
+    Callback = function()
+        cargarConfiguracionesDesdeArchivo()
+        actualizarListaPerfiles()
+        if #listaPerfiles > 0 then
+            perfilSeleccionado = listaPerfiles[1]
+        else
+            perfilSeleccionado = ""
+        end
+        dropdownPerfiles:Refresh(listaPerfiles, perfilSeleccionado)
+        WindUI:Notify({Title = "Actualizado", Description = "Perfiles: " .. #listaPerfiles, Duration = 2})
+    end
+})
+ConfiguracionesTab:Section({Title = "Informacion", TextSize = 14, TextTransparency = 0.15})
+ConfiguracionesTab:Section({Title = "El sistema guarda: ESP (activado, nombres, tracers, colores), AimBot (todas las opciones), Main (velocidad, salto, fullbright, fps), Protecciones y Diversion", TextSize = 12, TextTransparency = 0.2})
+local CreditsTab = CreditsSection:Tab({
+    Title = "Creditos",
+    Icon = "star",
+    IconColor = Yellow,
+    IconShape = "Square",
+    Border = true
+})
+CreditsTab:Section({Title = "CREDITOS", TextSize = 24, FontWeight = Enum.FontWeight.SemiBold})
+CreditsTab:Section({Title = "Agradecimientos especiales a:", TextSize = 16, TextTransparency = 0.15})
+CreditsTab:Button({
+    Title = "Pichigdasos Tiktok (Dev)",
+    Description = "https://www.tiktok.com/@blue_dragon306",
+    Callback = function()
+        setclipboard("https://www.tiktok.com/@blue_dragon306?_r=1&_t=ZS-99LvlY3iKzk")
+        WindUI:Notify({Title = "Copiado!", Description = "Enlace de TikTok copiado al portapapeles", Duration = 2})
+    end
+})
+CreditsTab:Button({
+    Title = "Pichigdasos User De Discord",
+    Description = "miguel_minecraft87_64379",
+    Callback = function()
+        setclipboard("miguel_minecraft87_64379")
+        WindUI:Notify({Title = "Copiado!", Description = "Usuario de Discord copiado al portapapeles", Duration = 2})
+    end
+})
+CreditsTab:Button({
+    Title = "Chituk Youtube",
+    Description = "https://youtube.com/@chituk_9",
+    Callback = function()
+        setclipboard("https://youtube.com/@chituk_9?si=dbjab9LutZnuNYDv")
+        WindUI:Notify({Title = "Copiado!", Description = "Enlace de YouTube copiado al portapapeles", Duration = 2})
+    end
+})
+CreditsTab:Button({
+    Title = "Chituk Server De Discord",
+    Description = "https://discord.gg/mdvByagDr3",
+    Callback = function()
+        setclipboard("https://discord.gg/mdvByagDr3")
+        WindUI:Notify({Title = "Copiado!", Description = "Enlace del servidor de Discord copiado al portapapeles", Duration = 2})
+    end
+})
+CreditsTab:Section({Title = "Y A ti por usar el Script💖", TextSize = 17, TextTransparency = 0.1})
+AimTab:Toggle({
+    Title = "Activar AimBot",
+    Default = false,
+    Callback = function(value)
+        aimbotEnabled = value
+    end
+})
+AimTab:Input({
+    Title = "FOV (rango 10-300)",
+    Default = "80",
+    Numeric = true,
+    Callback = function(value)
+        local num = tonumber(value)
+        if num then
+            num = math.clamp(num, 10, 300)
+            fov = num
+        end
+    end
+})
+AimTab:Toggle({
+    Title = "Ignorar compañeros de equipo",
+    Default = false,
+    Callback = function(value)
+        teamCheck = value
+    end
+})
+AimTab:Toggle({
+    Title = "Ignorar jugadores muertos",
+    Default = false,
+    Callback = function(value)
+        killCheck = value
+    end
+})
+AimTab:Toggle({
+    Title = "Ignorar detrás de paredes",
+    Default = false,
+    Callback = function(value)
+        wallCheck = value
+    end
+})
+AimTab:Dropdown({
+    Title = "Parte del cuerpo",
+    Values = { "Head", "Torso", "HumanoidRootPart", "LeftLeg", "RightLeg" },
+    Default = "Head",
+    Callback = function(value)
+        targetPartName = value
+    end
+})
 ESPTab:Toggle({
     Title = "Activar ESP",
     Default = false,
@@ -1954,7 +2027,6 @@ ESPTab:Toggle({
         end
     end
 })
-
 ESPTab:Toggle({
     Title = "Mostrar nombres",
     Default = false,
@@ -1968,7 +2040,6 @@ ESPTab:Toggle({
         end
     end
 })
-
 ESPTab:Toggle({
     Title = "Mostrar tracers (líneas)",
     Default = false,
@@ -1982,7 +2053,6 @@ ESPTab:Toggle({
         end
     end
 })
-
 ESPTab:Toggle({
     Title = "Colores por equipo (rojo enemigo, verde aliado)",
     Default = true,
@@ -2002,52 +2072,3 @@ ESPTab:Toggle({
         end
     end
 })
-
-local CreditsTab = CreditsSection:Tab({
-    Title = "Creditos",
-    Icon = "star",
-    IconColor = Yellow,
-    IconShape = "Square",
-    Border = true
-})
-
-CreditsTab:Section({Title = "CREDITOS", TextSize = 24, FontWeight = Enum.FontWeight.SemiBold})
-CreditsTab:Section({Title = "Agradecimientos especiales a:", TextSize = 16, TextTransparency = 0.15})
-
-CreditsTab:Button({
-    Title = "Pichigdasos Tiktok (Dev)",
-    Description = "https://www.tiktok.com/@blue_dragon306",
-    Callback = function()
-        setclipboard("https://www.tiktok.com/@blue_dragon306?_r=1&_t=ZS-99LvlY3iKzk")
-        WindUI:Notify({Title = "Copiado!", Description = "Enlace de TikTok copiado al portapapeles", Duration = 2})
-    end
-})
-
-CreditsTab:Button({
-    Title = "Pichigdasos User De Discord",
-    Description = "miguel_minecraft87_64379",
-    Callback = function()
-        setclipboard("miguel_minecraft87_64379")
-        WindUI:Notify({Title = "Copiado!", Description = "Usuario de Discord copiado al portapapeles", Duration = 2})
-    end
-})
-
-CreditsTab:Button({
-    Title = "Chituk Youtube",
-    Description = "https://youtube.com/@chituk_9",
-    Callback = function()
-        setclipboard("https://youtube.com/@chituk_9?si=dbjab9LutZnuNYDv")
-        WindUI:Notify({Title = "Copiado!", Description = "Enlace de YouTube copiado al portapapeles", Duration = 2})
-    end
-})
-
-CreditsTab:Button({
-    Title = "Chituk Server De Discord",
-    Description = "https://discord.gg/mdvByagDr3",
-    Callback = function()
-        setclipboard("https://discord.gg/mdvByagDr3")
-        WindUI:Notify({Title = "Copiado!", Description = "Enlace del servidor de Discord copiado al portapapeles", Duration = 2})
-    end
-})
-
-CreditsTab:Section({Title = "Y A ti por usar el Script💖", TextSize = 17, TextTransparency = 0.1})
