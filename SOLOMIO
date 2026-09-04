@@ -1776,7 +1776,7 @@ end
 local function createMarkerText(targetPlayer)
     if markerTexts[targetPlayer] then return end
     local marker = Drawing.new("Text")
-    marker.Size = 16
+    marker.Size = 18
     marker.Center = true
     marker.Outline = true
     marker.OutlineColor = Color3.fromRGB(0, 0, 0)
@@ -1884,10 +1884,11 @@ local function updateESP()
                     marker = markerTexts[targetPlayer]
                 end
                 marker.Position = Vector2.new(pos.X, pos.Y - 45)
+                marker.Text = "■"
                 if targetPlayer.Team == player.Team then
-                    marker.Text = "🟩"
+                    marker.Color = Color3.fromRGB(0, 255, 0)
                 else
-                    marker.Text = "🟥"
+                    marker.Color = Color3.fromRGB(255, 0, 0)
                 end
                 marker.Visible = true
             else
