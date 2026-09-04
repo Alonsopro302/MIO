@@ -1686,8 +1686,6 @@ local espEnabled = false
 local showNames = false
 local showTracers = false
 local showTeamMarkers = false
-local allySymbol = "■"
-local enemySymbol = "■"
 
 local highlightList = {}
 local nameTexts = {}
@@ -1886,11 +1884,10 @@ local function updateESP()
                     marker = markerTexts[targetPlayer]
                 end
                 marker.Position = Vector2.new(pos.X, pos.Y - 45)
+                marker.Text = "■"
                 if targetPlayer.Team == player.Team then
-                    marker.Text = allySymbol
                     marker.Color = Color3.fromRGB(0, 255, 0)
                 else
-                    marker.Text = enemySymbol
                     marker.Color = Color3.fromRGB(255, 0, 0)
                 end
                 marker.Visible = true
@@ -2007,23 +2004,5 @@ ESPTab:Toggle({
                 markerTexts[targetPlayer].Visible = value
             end
         end
-    end
-})
-
-ESPTab:Dropdown({
-    Title = "Emoji Aliados",
-    Options = {"■", "●", "▲", "▼", "◆", "★", "✦", "◉", "♦", "✖"},
-    Default = "■",
-    Callback = function(value)
-        allySymbol = value
-    end
-})
-
-ESPTab:Dropdown({
-    Title = "Emoji Enemigos",
-    Options = {"■", "●", "▲", "▼", "◆", "★", "✦", "◉", "♦", "✖"},
-    Default = "■",
-    Callback = function(value)
-        enemySymbol = value
     end
 })
