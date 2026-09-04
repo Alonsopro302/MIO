@@ -33,7 +33,6 @@ local ESPSection = Window:Section({Title = "ESP"})
 local TPSection = Window:Section({Title = "TP"})
 local AimSection = Window:Section({Title = "AimBot"})
 local DiversionSection = Window:Section({Title = "Diversion"})
-local ConfiguracionesSection = Window:Section({Title = "Configuraciones"})
 local CreditsSection = Window:Section({Title = "Creditos"})
 local MainTab = MainSection:Tab({
     Title = "Main",
@@ -159,11 +158,11 @@ MainTab:Toggle({
                 TextButton.Text = "V"
             end)
             TextButton3.MouseButton1Click:Connect(function()
-                n1 = n1 + 1
+                n1 += 1
                 TextBox.Text = tostring(n1)
             end)
             TextButton2.MouseButton1Click:Connect(function()
-                n1 = n1 - 1
+                n1 -= 1
                 TextBox.Text = tostring(n1)
             end)
             TextBox.FocusLost:Connect(function(_)
@@ -1348,6 +1347,48 @@ local AimTab = AimSection:Tab({
 })
 AimTab:Section({Title = "AIMBOT", TextSize = 24, FontWeight = Enum.FontWeight.SemiBold})
 AimTab:Section({Title = "Opciones de AimBot", TextSize = 16, TextTransparency = 0.15})
+local CreditsTab = CreditsSection:Tab({
+    Title = "Creditos",
+    Icon = "star",
+    IconColor = Yellow,
+    IconShape = "Square",
+    Border = true
+})
+CreditsTab:Section({Title = "CREDITOS", TextSize = 24, FontWeight = Enum.FontWeight.SemiBold})
+CreditsTab:Section({Title = "Agradecimientos especiales a:", TextSize = 16, TextTransparency = 0.15})
+CreditsTab:Button({
+    Title = "Pichigdasos Tiktok (Dev)",
+    Description = "https://www.tiktok.com/@blue_dragon306",
+    Callback = function()
+        setclipboard("https://www.tiktok.com/@blue_dragon306?_r=1&_t=ZS-99LvlY3iKzk")
+        WindUI:Notify({Title = "Copiado!", Description = "Enlace de TikTok copiado al portapapeles", Duration = 2})
+    end
+})
+CreditsTab:Button({
+    Title = "Pichigdasos User De Discord",
+    Description = "miguel_minecraft87_64379",
+    Callback = function()
+        setclipboard("miguel_minecraft87_64379")
+        WindUI:Notify({Title = "Copiado!", Description = "Usuario de Discord copiado al portapapeles", Duration = 2})
+    end
+})
+CreditsTab:Button({
+    Title = "Chituk Youtube",
+    Description = "https://youtube.com/@chituk_9",
+    Callback = function()
+        setclipboard("https://youtube.com/@chituk_9?si=dbjab9LutZnuNYDv")
+        WindUI:Notify({Title = "Copiado!", Description = "Enlace de YouTube copiado al portapapeles", Duration = 2})
+    end
+})
+CreditsTab:Button({
+    Title = "Chituk Server De Discord",
+    Description = "https://discord.gg/mdvByagDr3",
+    Callback = function()
+        setclipboard("https://discord.gg/mdvByagDr3")
+        WindUI:Notify({Title = "Copiado!", Description = "Enlace del servidor de Discord copiado al portapapeles", Duration = 2})
+    end
+})
+CreditsTab:Section({Title = "Y A ti por usar el Script💖", TextSize = 17, TextTransparency = 0.1})
 local Camera = workspace.CurrentCamera
 local aimbotEnabled = false
 local fov = 80
@@ -1355,11 +1396,155 @@ local teamCheck = false
 local killCheck = false
 local wallCheck = false
 local targetPartName = "Head"
+local targetPrisoners = false
+local targetCriminals = false
+local targetGuards = false
 local circle = Drawing.new("Circle")
 circle.Thickness = 1.5
 circle.Color = Color3.fromRGB(255, 255, 255)
 circle.Filled = false
 circle.Visible = false
+local function getTeamType(targetPlayer)
+    if not targetPlayer.Team then return "Other" end
+    local teamName = targetPlayer.Team.Name
+    local teamColor = targetPlayer.TeamColor and targetPlayer.TeamColor.Name or ""
+    if teamName == "Guards" or teamColor == "Really blue" or teamColor == "Bright blue" or teamColor == "Deep blue" then
+        return "Guard"
+    elseif teamName == "Criminals" or teamColor == "Really red" then
+        return "Criminal"
+    elseif teamName == "Prisoners" or teamColor == "Bright orange" or teamColor == "Really orange" then
+        return "Prisoner"
+    end
+    return "Other"
+end
+local function isTargetTeam(targetPlayer)
+    if not targetPrisoners and not targetCriminals and not targetGuards then
+        return true
+    end
+    local teamType = getTeamType(targetPlayer)
+    if targetPrisoners and teamType == "Prisoner" then return true end
+    if targetCriminals and teamType == "Criminal" then return true end
+    if targetGuards and teamType == "Guard" then return true end
+    return false
+end
+local function findBestTarget()
+    local bestDist = 1e999
+    local bestPlayer = nil
+    local center = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
+    for _, targetPlayer in pairs(Players:GetPlayers()) do
+        if targetPlayer == player then continue end
+        local targetCharacter = targetPlayer.Character
+        if not targetCharacter then continue end
+        local targetPart = targetCharacter:FindFirstChild(targetPartName)
+        if not targetPart then continue end
+        if teamCheck and targetPlayer.Team == player.Team then continue end
+        if not isTargetTeam(targetPlayer) then continue end
+        local targetHumanoid = targetCharacter:FindFirstChildOfClass("Humanoid")
+        if killCheck and (not targetHumanoid or targetHumanoid.Health <= 0) then continue end
+        if wallCheck then
+            local origin = Camera.CFrame.Position
+            local direction = (targetPart.Position - origin).Unit * 500
+            local params = RaycastParams.new()
+            params.FilterType = Enum.RaycastFilterType.Blacklist
+            params.FilterDescendantsInstances = { player.Character }
+            local result = workspace:Raycast(origin, direction, params)
+            if result and not targetCharacter:IsAncestorOf(result.Instance) then
+                continue
+            end
+        end
+        local screenPos, onScreen = Camera:WorldToViewportPoint(targetPart.Position)
+        if onScreen then
+            local dist = (Vector2.new(screenPos.X, screenPos.Y) - center).Magnitude
+            if dist < fov and dist < bestDist then
+                bestDist = dist
+                bestPlayer = targetPlayer
+            end
+        end
+    end
+    return bestPlayer
+end
+RunService:BindToRenderStep("AimbotRender", Enum.RenderPriority.Camera.Value + 1, function()
+    local center = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
+    circle.Position = center
+    circle.Radius = fov
+    circle.Visible = aimbotEnabled
+    if aimbotEnabled then
+        local target = findBestTarget()
+        if target and target.Character and target.Character:FindFirstChild(targetPartName) then
+            Camera.CFrame = CFrame.new(Camera.CFrame.Position, target.Character[targetPartName].Position)
+        end
+    end
+end)
+AimTab:Toggle({
+    Title = "Activar AimBot",
+    Default = false,
+    Callback = function(value)
+        aimbotEnabled = value
+    end
+})
+AimTab:Input({
+    Title = "FOV (rango 10-300)",
+    Default = "80",
+    Numeric = true,
+    Callback = function(value)
+        local num = tonumber(value)
+        if num then
+            num = math.clamp(num, 10, 300)
+            fov = num
+        end
+    end
+})
+AimTab:Section({Title = "Equipos Objetivo", TextSize = 14, TextTransparency = 0.15})
+AimTab:Toggle({
+    Title = "Atacar Prisioneros",
+    Default = false,
+    Callback = function(value)
+        targetPrisoners = value
+    end
+})
+AimTab:Toggle({
+    Title = "Atacar Criminales",
+    Default = false,
+    Callback = function(value)
+        targetCriminals = value
+    end
+})
+AimTab:Toggle({
+    Title = "Atacar Guardias",
+    Default = false,
+    Callback = function(value)
+        targetGuards = value
+    end
+})
+AimTab:Toggle({
+    Title = "Ignorar compañeros de equipo",
+    Default = false,
+    Callback = function(value)
+        teamCheck = value
+    end
+})
+AimTab:Toggle({
+    Title = "Ignorar jugadores muertos",
+    Default = false,
+    Callback = function(value)
+        killCheck = value
+    end
+})
+AimTab:Toggle({
+    Title = "Ignorar detrás de paredes",
+    Default = false,
+    Callback = function(value)
+        wallCheck = value
+    end
+})
+AimTab:Dropdown({
+    Title = "Parte del cuerpo",
+    Values = { "Head", "Torso", "HumanoidRootPart", "LeftLeg", "RightLeg" },
+    Default = "Head",
+    Callback = function(value)
+        targetPartName = value
+    end
+})
 local espEnabled = false
 local showNames = false
 local showTracers = false
@@ -1372,11 +1557,15 @@ local function getPlayerColor(targetPlayer)
     if not teamColors then
         return Color3.fromRGB(255, 0, 0)
     end
-    if targetPlayer.Team == player.Team then
-        return Color3.fromRGB(0, 255, 0)
-    else
+    local teamType = getTeamType(targetPlayer)
+    if teamType == "Prisoner" then
+        return Color3.fromRGB(255, 165, 0)
+    elseif teamType == "Criminal" then
         return Color3.fromRGB(255, 0, 0)
+    elseif teamType == "Guard" then
+        return Color3.fromRGB(0, 100, 255)
     end
+    return Color3.fromRGB(255, 255, 255)
 end
 local function applyHighlight(targetPlayer)
     if targetPlayer == player then return end
@@ -1566,455 +1755,6 @@ local function disableESP()
     disconnectAll()
     RunService:UnbindFromRenderStep("ESPRender")
 end
-local function findBestTarget()
-    local bestDist = 1e999
-    local bestPlayer = nil
-    local center = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
-    for _, targetPlayer in pairs(Players:GetPlayers()) do
-        if targetPlayer == player then continue end
-        local targetCharacter = targetPlayer.Character
-        if not targetCharacter then continue end
-        local targetPart = targetCharacter:FindFirstChild(targetPartName)
-        if not targetPart then continue end
-        if teamCheck and targetPlayer.Team == player.Team then continue end
-        local targetHumanoid = targetCharacter:FindFirstChildOfClass("Humanoid")
-        if killCheck and (not targetHumanoid or targetHumanoid.Health <= 0) then continue end
-        if wallCheck then
-            local origin = Camera.CFrame.Position
-            local direction = (targetPart.Position - origin).Unit * 500
-            local params = RaycastParams.new()
-            params.FilterType = Enum.RaycastFilterType.Blacklist
-            params.FilterDescendantsInstances = { player.Character }
-            local result = workspace:Raycast(origin, direction, params)
-            if result and not targetCharacter:IsAncestorOf(result.Instance) then
-                continue
-            end
-        end
-        local screenPos, onScreen = Camera:WorldToViewportPoint(targetPart.Position)
-        if onScreen then
-            local dist = (Vector2.new(screenPos.X, screenPos.Y) - center).Magnitude
-            if dist < fov and dist < bestDist then
-                bestDist = dist
-                bestPlayer = targetPlayer
-            end
-        end
-    end
-    return bestPlayer
-end
-RunService:BindToRenderStep("AimbotRender", Enum.RenderPriority.Camera.Value + 1, function()
-    local center = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
-    circle.Position = center
-    circle.Radius = fov
-    circle.Visible = aimbotEnabled
-    if aimbotEnabled then
-        local target = findBestTarget()
-        if target and target.Character and target.Character:FindFirstChild(targetPartName) then
-            Camera.CFrame = CFrame.new(Camera.CFrame.Position, target.Character[targetPartName].Position)
-        end
-    end
-end)
-local ConfiguracionesTab = ConfiguracionesSection:Tab({
-    Title = "Configuraciones",
-    Icon = "settings",
-    IconColor = Yellow,
-    IconShape = "Square",
-    Border = true
-})
-ConfiguracionesTab:Section({Title = "CONFIGURACIONES", TextSize = 24, FontWeight = Enum.FontWeight.SemiBold})
-ConfiguracionesTab:Section({Title = "Sistema de guardado JSON para ESP y mas", TextSize = 16, TextTransparency = 0.15})
-local HttpService = game:GetService("HttpService")
-local CONFIG_FOLDER = "ChitukHub"
-local CONFIG_FILE = CONFIG_FOLDER .. "/configuraciones.json"
-local configuracionesGuardadas = {}
-local perfilSeleccionado = ""
-local listaPerfiles = {}
-local function tieneFuncionesArchivo()
-    return isfile and writefile and readfile and delfile and isfolder and makefolder
-end
-local function cargarConfiguracionesDesdeArchivo()
-    if not tieneFuncionesArchivo() then return end
-    if not isfolder(CONFIG_FOLDER) then
-        makefolder(CONFIG_FOLDER)
-    end
-    if isfile(CONFIG_FILE) then
-        local exito, datos = pcall(function()
-            return HttpService:JSONDecode(readfile(CONFIG_FILE))
-        end)
-        if exito and type(datos) == "table" then
-            configuracionesGuardadas = datos
-        end
-    end
-end
-local function guardarConfiguracionesEnArchivo()
-    if not tieneFuncionesArchivo() then return end
-    if not isfolder(CONFIG_FOLDER) then
-        makefolder(CONFIG_FOLDER)
-    end
-    pcall(function()
-        writefile(CONFIG_FILE, HttpService:JSONEncode(configuracionesGuardadas))
-    end)
-end
-local function actualizarListaPerfiles()
-    listaPerfiles = {}
-    for nombre in pairs(configuracionesGuardadas) do
-        table.insert(listaPerfiles, nombre)
-    end
-    table.sort(listaPerfiles)
-    return listaPerfiles
-end
-local function obtenerConfiguracionActual()
-    return {
-        ESP = {
-            espEnabled = espEnabled,
-            showNames = showNames,
-            showTracers = showTracers,
-            teamColors = teamColors
-        },
-        AimBot = {
-            aimbotEnabled = aimbotEnabled,
-            fov = fov,
-            teamCheck = teamCheck,
-            killCheck = killCheck,
-            wallCheck = wallCheck,
-            targetPartName = targetPartName
-        },
-        Main = {
-            speedEnabled = speedEnabled,
-            speedMultiplier = speedMultiplier,
-            infiniteJumpEnabled = infiniteJumpEnabled,
-            fullBrightEnabled = fullBrightEnabled,
-            fpsBoostEnabled = fpsBoostEnabled
-        },
-        Protecciones = {
-            antiArrestEnabled = antiArrestEnabled,
-            antiTaseEnabled = antiTaseEnabled
-        },
-        Diversion = {
-            airWalkEnabled = airWalkEnabled,
-            botActivo = botActivo
-        }
-    }
-end
-local function aplicarConfiguracion(config)
-    if not config then return end
-    if config.ESP then
-        if config.ESP.showNames ~= nil then
-            showNames = config.ESP.showNames
-        end
-        if config.ESP.showTracers ~= nil then
-            showTracers = config.ESP.showTracers
-        end
-        if config.ESP.teamColors ~= nil then
-            teamColors = config.ESP.teamColors
-        end
-        if config.ESP.espEnabled ~= nil then
-            if config.ESP.espEnabled and not espEnabled then
-                espEnabled = true
-                setupESP()
-            elseif not config.ESP.espEnabled and espEnabled then
-                espEnabled = false
-                disableESP()
-            end
-        end
-        if espEnabled then
-            for targetPlayer in pairs(nameTexts) do
-                if nameTexts[targetPlayer] then
-                    nameTexts[targetPlayer].Visible = showNames
-                end
-            end
-            for targetPlayer in pairs(tracerLines) do
-                if tracerLines[targetPlayer] then
-                    tracerLines[targetPlayer].Visible = showTracers
-                end
-            end
-            for targetPlayer in pairs(highlightList) do
-                if highlightList[targetPlayer] then
-                    highlightList[targetPlayer].FillColor = getPlayerColor(targetPlayer)
-                end
-                if nameTexts[targetPlayer] then
-                    nameTexts[targetPlayer].Color = getPlayerColor(targetPlayer)
-                end
-                if tracerLines[targetPlayer] then
-                    tracerLines[targetPlayer].Color = getPlayerColor(targetPlayer)
-                end
-            end
-        end
-    end
-    if config.AimBot then
-        if config.AimBot.fov ~= nil then
-            fov = config.AimBot.fov
-        end
-        if config.AimBot.teamCheck ~= nil then
-            teamCheck = config.AimBot.teamCheck
-        end
-        if config.AimBot.killCheck ~= nil then
-            killCheck = config.AimBot.killCheck
-        end
-        if config.AimBot.wallCheck ~= nil then
-            wallCheck = config.AimBot.wallCheck
-        end
-        if config.AimBot.targetPartName ~= nil then
-            targetPartName = config.AimBot.targetPartName
-        end
-        if config.AimBot.aimbotEnabled ~= nil then
-            aimbotEnabled = config.AimBot.aimbotEnabled
-        end
-    end
-    if config.Main then
-        if config.Main.speedMultiplier ~= nil then
-            speedMultiplier = config.Main.speedMultiplier
-        end
-        if config.Main.infiniteJumpEnabled ~= nil then
-            infiniteJumpEnabled = config.Main.infiniteJumpEnabled
-            if infiniteJumpEnabled then
-                activarSaltoInfinito()
-            elseif jumpConnection then
-                jumpConnection:Disconnect()
-                jumpConnection = nil
-            end
-        end
-        if config.Main.fullBrightEnabled ~= nil then
-            fullBrightEnabled = config.Main.fullBrightEnabled
-            if fullBrightEnabled then
-                Lighting.Brightness = 3
-                Lighting.Ambient = Color3.fromRGB(255, 255, 255)
-                Lighting.OutdoorAmbient = Color3.fromRGB(255, 255, 255)
-                Lighting.ColorShift_Top = Color3.fromRGB(255, 255, 255)
-                Lighting.ColorShift_Bottom = Color3.fromRGB(255, 255, 255)
-                Lighting.ShadowSoftness = 1
-                Lighting.GlobalShadows = false
-                Lighting.FogEnd = 100000
-                Lighting.FogStart = 100000
-            else
-                Lighting.Brightness = oldLighting.Brightness
-                Lighting.Ambient = oldLighting.Ambient
-                Lighting.OutdoorAmbient = oldLighting.OutdoorAmbient
-                Lighting.ColorShift_Top = oldLighting.ColorShift_Top
-                Lighting.ColorShift_Bottom = oldLighting.ColorShift_Bottom
-                Lighting.ShadowSoftness = oldLighting.ShadowSoftness
-                Lighting.GlobalShadows = oldLighting.GlobalShadows
-                Lighting.FogEnd = oldLighting.FogEnd
-                Lighting.FogStart = oldLighting.FogStart
-            end
-        end
-        if config.Main.fpsBoostEnabled ~= nil then
-            fpsBoostEnabled = config.Main.fpsBoostEnabled
-            if fpsBoostEnabled then
-                desactivarEfectos()
-            else
-                restaurarEfectos()
-            end
-        end
-        if config.Main.speedEnabled ~= nil then
-            speedEnabled = config.Main.speedEnabled
-            if speedEnabled then
-                activarVelocidad()
-            elseif speedConnection then
-                speedConnection:Disconnect()
-                speedConnection = nil
-            end
-        end
-    end
-    if config.Protecciones then
-        if config.Protecciones.antiArrestEnabled ~= nil then
-            antiArrestEnabled = config.Protecciones.antiArrestEnabled
-        end
-        if config.Protecciones.antiTaseEnabled ~= nil then
-            antiTaseEnabled = config.Protecciones.antiTaseEnabled
-        end
-        if (antiArrestEnabled or antiTaseEnabled) and not animConnection then
-            setupProtectionConnection()
-        end
-    end
-    if config.Diversion then
-        if config.Diversion.airWalkEnabled ~= nil then
-            airWalkEnabled = config.Diversion.airWalkEnabled
-            if airWalkEnabled then
-                startAirWalk()
-            else
-                stopAirWalk()
-            end
-        end
-        if config.Diversion.botActivo ~= nil then
-            toggleBot(config.Diversion.botActivo)
-        end
-    end
-end
-cargarConfiguracionesDesdeArchivo()
-actualizarListaPerfiles()
-if #listaPerfiles > 0 then
-    perfilSeleccionado = listaPerfiles[1]
-end
-local dropdownPerfiles = ConfiguracionesTab:Dropdown({
-    Title = "Perfiles Guardados",
-    Values = listaPerfiles,
-    Default = perfilSeleccionado,
-    Callback = function(value)
-        perfilSeleccionado = value
-    end
-})
-local inputNombrePerfil = ConfiguracionesTab:Input({
-    Title = "Nombre del perfil",
-    Default = "MiPerfil",
-    Callback = function(value)
-    end
-})
-ConfiguracionesTab:Button({
-    Title = "Crear / Guardar perfil",
-    Description = "Guarda la configuracion actual con el nombre escrito",
-    Callback = function()
-        local nombre = inputNombrePerfil.Value or inputNombrePerfil._value or ""
-        if type(nombre) ~= "string" or nombre == "" then
-            nombre = "MiPerfil"
-        end
-        configuracionesGuardadas[nombre] = obtenerConfiguracionActual()
-        guardarConfiguracionesEnArchivo()
-        actualizarListaPerfiles()
-        perfilSeleccionado = nombre
-        dropdownPerfiles:Refresh(listaPerfiles, perfilSeleccionado)
-        WindUI:Notify({Title = "Guardado", Description = "Perfil '" .. nombre .. "' guardado correctamente", Duration = 2})
-    end
-})
-ConfiguracionesTab:Button({
-    Title = "Cargar perfil seleccionado",
-    Description = "Aplica la configuracion del perfil elegido",
-    Callback = function()
-        if perfilSeleccionado == "" or not configuracionesGuardadas[perfilSeleccionado] then
-            WindUI:Notify({Title = "Error", Description = "Selecciona un perfil valido primero", Duration = 2})
-            return
-        end
-        aplicarConfiguracion(configuracionesGuardadas[perfilSeleccionado])
-        WindUI:Notify({Title = "Cargado", Description = "Perfil '" .. perfilSeleccionado .. "' aplicado correctamente", Duration = 2})
-    end
-})
-ConfiguracionesTab:Button({
-    Title = "Borrar perfil seleccionado",
-    Description = "Elimina permanentemente el perfil elegido",
-    Callback = function()
-        if perfilSeleccionado == "" or not configuracionesGuardadas[perfilSeleccionado] then
-            WindUI:Notify({Title = "Error", Description = "Selecciona un perfil valido primero", Duration = 2})
-            return
-        end
-        local nombreBorrar = perfilSeleccionado
-        configuracionesGuardadas[nombreBorrar] = nil
-        guardarConfiguracionesEnArchivo()
-        actualizarListaPerfiles()
-        if #listaPerfiles > 0 then
-            perfilSeleccionado = listaPerfiles[1]
-        else
-            perfilSeleccionado = ""
-        end
-        dropdownPerfiles:Refresh(listaPerfiles, perfilSeleccionado)
-        WindUI:Notify({Title = "Borrado", Description = "Perfil '" .. nombreBorrar .. "' eliminado correctamente", Duration = 2})
-    end
-})
-ConfiguracionesTab:Button({
-    Title = "Actualizar lista de perfiles",
-    Description = "Refresca la lista desde el archivo JSON",
-    Callback = function()
-        cargarConfiguracionesDesdeArchivo()
-        actualizarListaPerfiles()
-        if #listaPerfiles > 0 then
-            perfilSeleccionado = listaPerfiles[1]
-        else
-            perfilSeleccionado = ""
-        end
-        dropdownPerfiles:Refresh(listaPerfiles, perfilSeleccionado)
-        WindUI:Notify({Title = "Actualizado", Description = "Perfiles: " .. #listaPerfiles, Duration = 2})
-    end
-})
-ConfiguracionesTab:Section({Title = "Informacion", TextSize = 14, TextTransparency = 0.15})
-ConfiguracionesTab:Section({Title = "El sistema guarda: ESP (activado, nombres, tracers, colores), AimBot (todas las opciones), Main (velocidad, salto, fullbright, fps), Protecciones y Diversion", TextSize = 12, TextTransparency = 0.2})
-local CreditsTab = CreditsSection:Tab({
-    Title = "Creditos",
-    Icon = "star",
-    IconColor = Yellow,
-    IconShape = "Square",
-    Border = true
-})
-CreditsTab:Section({Title = "CREDITOS", TextSize = 24, FontWeight = Enum.FontWeight.SemiBold})
-CreditsTab:Section({Title = "Agradecimientos especiales a:", TextSize = 16, TextTransparency = 0.15})
-CreditsTab:Button({
-    Title = "Pichigdasos Tiktok (Dev)",
-    Description = "https://www.tiktok.com/@blue_dragon306",
-    Callback = function()
-        setclipboard("https://www.tiktok.com/@blue_dragon306?_r=1&_t=ZS-99LvlY3iKzk")
-        WindUI:Notify({Title = "Copiado!", Description = "Enlace de TikTok copiado al portapapeles", Duration = 2})
-    end
-})
-CreditsTab:Button({
-    Title = "Pichigdasos User De Discord",
-    Description = "miguel_minecraft87_64379",
-    Callback = function()
-        setclipboard("miguel_minecraft87_64379")
-        WindUI:Notify({Title = "Copiado!", Description = "Usuario de Discord copiado al portapapeles", Duration = 2})
-    end
-})
-CreditsTab:Button({
-    Title = "Chituk Youtube",
-    Description = "https://youtube.com/@chituk_9",
-    Callback = function()
-        setclipboard("https://youtube.com/@chituk_9?si=dbjab9LutZnuNYDv")
-        WindUI:Notify({Title = "Copiado!", Description = "Enlace de YouTube copiado al portapapeles", Duration = 2})
-    end
-})
-CreditsTab:Button({
-    Title = "Chituk Server De Discord",
-    Description = "https://discord.gg/mdvByagDr3",
-    Callback = function()
-        setclipboard("https://discord.gg/mdvByagDr3")
-        WindUI:Notify({Title = "Copiado!", Description = "Enlace del servidor de Discord copiado al portapapeles", Duration = 2})
-    end
-})
-CreditsTab:Section({Title = "Y A ti por usar el Script💖", TextSize = 17, TextTransparency = 0.1})
-AimTab:Toggle({
-    Title = "Activar AimBot",
-    Default = false,
-    Callback = function(value)
-        aimbotEnabled = value
-    end
-})
-AimTab:Input({
-    Title = "FOV (rango 10-300)",
-    Default = "80",
-    Numeric = true,
-    Callback = function(value)
-        local num = tonumber(value)
-        if num then
-            num = math.clamp(num, 10, 300)
-            fov = num
-        end
-    end
-})
-AimTab:Toggle({
-    Title = "Ignorar compañeros de equipo",
-    Default = false,
-    Callback = function(value)
-        teamCheck = value
-    end
-})
-AimTab:Toggle({
-    Title = "Ignorar jugadores muertos",
-    Default = false,
-    Callback = function(value)
-        killCheck = value
-    end
-})
-AimTab:Toggle({
-    Title = "Ignorar detrás de paredes",
-    Default = false,
-    Callback = function(value)
-        wallCheck = value
-    end
-})
-AimTab:Dropdown({
-    Title = "Parte del cuerpo",
-    Values = { "Head", "Torso", "HumanoidRootPart", "LeftLeg", "RightLeg" },
-    Default = "Head",
-    Callback = function(value)
-        targetPartName = value
-    end
-})
 ESPTab:Toggle({
     Title = "Activar ESP",
     Default = false,
@@ -2054,7 +1794,7 @@ ESPTab:Toggle({
     end
 })
 ESPTab:Toggle({
-    Title = "Colores por equipo (rojo enemigo, verde aliado)",
+    Title = "Colores por equipo",
     Default = true,
     Callback = function(value)
         teamColors = value
