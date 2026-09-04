@@ -1517,6 +1517,7 @@ AimTab:Section({Title = "AIMBOT", TextSize = 24, FontWeight = Enum.FontWeight.Se
 AimTab:Section({Title = "Opciones de AimBot", TextSize = 16, TextTransparency = 0.15})
 
 local crossHairGui = nil
+local miraPersonalizadaId = ""
 local CrossHairTab = CrossHairSection:Tab({
     Title = "CrossHair",
     Icon = "crosshair",
@@ -1525,34 +1526,118 @@ local CrossHairTab = CrossHairSection:Tab({
     Border = true
 })
 CrossHairTab:Section({Title = "CROSSHAIR", TextSize = 24, FontWeight = Enum.FontWeight.SemiBold})
-CrossHairTab:Section({Title = "Mira personalizada", TextSize = 16, TextTransparency = 0.15})
+CrossHairTab:Section({Title = "Selecciona tu mira", TextSize = 16, TextTransparency = 0.15})
+local function activarMira(assetId)
+    local PlayerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+    if PlayerGui:FindFirstChild("ChitukHubCrossHair") then
+        PlayerGui.ChitukHubCrossHair:Destroy()
+    end
+    crossHairGui = nil
+    if assetId and assetId ~= "" then
+        local ScreenGui = Instance.new("ScreenGui")
+        ScreenGui.Name = "ChitukHubCrossHair"
+        ScreenGui.ResetOnSpawn = false
+        ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+        ScreenGui.Parent = PlayerGui
+        crossHairGui = ScreenGui
+        local ImageLabel = Instance.new("ImageLabel")
+        ImageLabel.Size = UDim2.fromOffset(50, 50)
+        ImageLabel.Position = UDim2.fromScale(0.5, 0.5)
+        ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+        ImageLabel.BackgroundTransparency = 1
+        ImageLabel.Image = "rbxassetid://" .. tostring(assetId)
+        ImageLabel.Parent = ScreenGui
+    end
+end
+local function desactivarMira()
+    if crossHairGui then
+        crossHairGui:Destroy()
+        crossHairGui = nil
+    end
+end
 CrossHairTab:Toggle({
-    Title = "CrossHair (Mira)",
+    Title = "CrossHair (Mira) 1",
     Default = false,
     Callback = function(value)
         if value then
-            local PlayerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
-            if PlayerGui:FindFirstChild("ChitukHubCrossHair") then
-                PlayerGui.ChitukHubCrossHair:Destroy()
-            end
-            local ScreenGui = Instance.new("ScreenGui")
-            ScreenGui.Name = "ChitukHubCrossHair"
-            ScreenGui.ResetOnSpawn = false
-            ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-            ScreenGui.Parent = PlayerGui
-            crossHairGui = ScreenGui
-            local ImageLabel = Instance.new("ImageLabel")
-            ImageLabel.Size = UDim2.fromOffset(50, 50)
-            ImageLabel.Position = UDim2.fromScale(0.5, 0.5)
-            ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
-            ImageLabel.BackgroundTransparency = 1
-            ImageLabel.Image = "rbxassetid://7905983439"
-            ImageLabel.Parent = ScreenGui
+            activarMira("7905983439")
         else
-            if crossHairGui then
-                crossHairGui:Destroy()
-                crossHairGui = nil
-            end
+            desactivarMira()
+        end
+    end
+})
+CrossHairTab:Toggle({
+    Title = "CrossHair (Mira) 2",
+    Default = false,
+    Callback = function(value)
+        if value then
+            activarMira("9720078113")
+        else
+            desactivarMira()
+        end
+    end
+})
+CrossHairTab:Toggle({
+    Title = "CrossHair (Mira) 3",
+    Default = false,
+    Callback = function(value)
+        if value then
+            activarMira("10868459554")
+        else
+            desactivarMira()
+        end
+    end
+})
+CrossHairTab:Toggle({
+    Title = "CrossHair (Mira) 4",
+    Default = false,
+    Callback = function(value)
+        if value then
+            activarMira("5998624788")
+        else
+            desactivarMira()
+        end
+    end
+})
+CrossHairTab:Toggle({
+    Title = "CrossHair (Mira) 5",
+    Default = false,
+    Callback = function(value)
+        if value then
+            activarMira("10891594364")
+        else
+            desactivarMira()
+        end
+    end
+})
+CrossHairTab:Toggle({
+    Title = "CrossHair (Mira) 6",
+    Default = false,
+    Callback = function(value)
+        if value then
+            activarMira("11722368344")
+        else
+            desactivarMira()
+        end
+    end
+})
+CrossHairTab:Section({Title = "Mira Personalizada", TextSize = 18, FontWeight = Enum.FontWeight.SemiBold})
+CrossHairTab:Input({
+    Title = "ID de la mira",
+    Default = "",
+    Numeric = true,
+    Callback = function(value)
+        miraPersonalizadaId = value
+    end
+})
+CrossHairTab:Toggle({
+    Title = "Activar Mira Personalizada",
+    Default = false,
+    Callback = function(value)
+        if value then
+            activarMira(miraPersonalizadaId)
+        else
+            desactivarMira()
         end
     end
 })
