@@ -1518,6 +1518,8 @@ AimTab:Section({Title = "Opciones de AimBot", TextSize = 16, TextTransparency = 
 
 local crossHairGui = nil
 local miraPersonalizadaId = ""
+local togglePersonalizadaActivo = false
+local togglesCrossHair = {}
 local CrossHairTab = CrossHairSection:Tab({
     Title = "CrossHair",
     Icon = "crosshair",
@@ -1527,13 +1529,14 @@ local CrossHairTab = CrossHairSection:Tab({
 })
 CrossHairTab:Section({Title = "CROSSHAIR", TextSize = 24, FontWeight = Enum.FontWeight.SemiBold})
 CrossHairTab:Section({Title = "Selecciona tu mira", TextSize = 16, TextTransparency = 0.15})
-local function activarMira(assetId)
-    local PlayerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+local function activarMiraEnPantalla(assetId)
+    local PlayerGui = player:WaitForChild("PlayerGui")
     if PlayerGui:FindFirstChild("ChitukHubCrossHair") then
         PlayerGui.ChitukHubCrossHair:Destroy()
     end
     crossHairGui = nil
-    if assetId and assetId ~= "" then
+    local idLimpio = tostring(assetId):gsub("%s+", "")
+    if idLimpio and idLimpio ~= "" then
         local ScreenGui = Instance.new("ScreenGui")
         ScreenGui.Name = "ChitukHubCrossHair"
         ScreenGui.ResetOnSpawn = false
@@ -1542,82 +1545,95 @@ local function activarMira(assetId)
         crossHairGui = ScreenGui
         local ImageLabel = Instance.new("ImageLabel")
         ImageLabel.Size = UDim2.fromOffset(50, 50)
-        ImageLabel.Position = UDim2.fromScale(0.5, 0.5)
+        ImageLabel.Position = UDim2.new(0.5, -25, 0.5, -25)
         ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
         ImageLabel.BackgroundTransparency = 1
-        ImageLabel.Image = "rbxassetid://" .. tostring(assetId)
+        ImageLabel.Image = "rbxassetid://" .. idLimpio
         ImageLabel.Parent = ScreenGui
     end
 end
-local function desactivarMira()
+local function quitarMiraDePantalla()
     if crossHairGui then
         crossHairGui:Destroy()
         crossHairGui = nil
     end
 end
-CrossHairTab:Toggle({
+local function desactivarOtrosToggles(excepto)
+    for nombre, toggle in pairs(togglesCrossHair) do
+        if nombre ~= excepto and toggle then
+            toggle:SetValue(false)
+        end
+    end
+end
+togglesCrossHair["mira1"] = CrossHairTab:Toggle({
     Title = "CrossHair (Mira) 1",
     Default = false,
     Callback = function(value)
         if value then
-            activarMira("7905983439")
+            desactivarOtrosToggles("mira1")
+            activarMiraEnPantalla("7905983439")
         else
-            desactivarMira()
+            quitarMiraDePantalla()
         end
     end
 })
-CrossHairTab:Toggle({
+togglesCrossHair["mira2"] = CrossHairTab:Toggle({
     Title = "CrossHair (Mira) 2",
     Default = false,
     Callback = function(value)
         if value then
-            activarMira("9720078113")
+            desactivarOtrosToggles("mira2")
+            activarMiraEnPantalla("9720078113")
         else
-            desactivarMira()
+            quitarMiraDePantalla()
         end
     end
 })
-CrossHairTab:Toggle({
+togglesCrossHair["mira3"] = CrossHairTab:Toggle({
     Title = "CrossHair (Mira) 3",
     Default = false,
     Callback = function(value)
         if value then
-            activarMira("10868459554")
+            desactivarOtrosToggles("mira3")
+            activarMiraEnPantalla("10868459554")
         else
-            desactivarMira()
+            quitarMiraDePantalla()
         end
     end
 })
-CrossHairTab:Toggle({
+togglesCrossHair["mira4"] = CrossHairTab:Toggle({
     Title = "CrossHair (Mira) 4",
     Default = false,
     Callback = function(value)
         if value then
-            activarMira("5998624788")
+            desactivarOtrosToggles("mira4")
+            activarMiraEnPantalla("5998624788")
         else
-            desactivarMira()
+            quitarMiraDePantalla()
         end
     end
 })
-CrossHairTab:Toggle({
+togglesCrossHair["mira5"] = CrossHairTab:Toggle({
     Title = "CrossHair (Mira) 5",
     Default = false,
     Callback = function(value)
         if value then
-            activarMira("10891594364")
+            desactivarOtrosToggles("mira5")
+            activarMiraEnPantalla("10891594364")
         else
-            desactivarMira()
+            quitarMiraDePantalla()
         end
     end
 })
-CrossHairTab:Toggle({
+togglesCrossHair["mira6"] = CrossHairTab:Toggle({
     Title = "CrossHair (Mira) 6",
     Default = false,
     Callback = function(value)
         if value then
-            activarMira("11722368344")
+            desactivarOtrosToggles("mira6")
+            activarMiraEnPantalla("11722368344")
         else
-            desactivarMira()
+            quitarMiraDePantalla()
         end
     end
 })
@@ -1625,19 +1641,23 @@ CrossHairTab:Section({Title = "Mira Personalizada", TextSize = 18, FontWeight = 
 CrossHairTab:Input({
     Title = "ID de la mira",
     Default = "",
-    Numeric = true,
     Callback = function(value)
         miraPersonalizadaId = value
+        if togglePersonalizadaActivo then
+            activarMiraEnPantalla(miraPersonalizadaId)
+        end
     end
 })
 CrossHairTab:Toggle({
     Title = "Activar Mira Personalizada",
     Default = false,
     Callback = function(value)
+        togglePersonalizadaActivo = value
         if value then
-            activarMira(miraPersonalizadaId)
+            desactivarOtrosToggles("personalizada")
+            activarMiraEnPantalla(miraPersonalizadaId)
         else
-            desactivarMira()
+            quitarMiraDePantalla()
         end
     end
 })
