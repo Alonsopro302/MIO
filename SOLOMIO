@@ -1541,6 +1541,7 @@ local function activarMiraEnPantalla(assetId)
         ScreenGui.Name = "ChitukHubCrossHair"
         ScreenGui.ResetOnSpawn = false
         ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+        ScreenGui.DisplayOrder = 999
         ScreenGui.Parent = PlayerGui
         crossHairGui = ScreenGui
         local ImageLabel = Instance.new("ImageLabel")
@@ -1548,6 +1549,9 @@ local function activarMiraEnPantalla(assetId)
         ImageLabel.Position = UDim2.new(0.5, -25, 0.5, -25)
         ImageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
         ImageLabel.BackgroundTransparency = 1
+        ImageLabel.ImageTransparency = 0
+        ImageLabel.Visible = true
+        ImageLabel.ZIndex = 10
         ImageLabel.Image = "rbxassetid://" .. idLimpio
         ImageLabel.Parent = ScreenGui
     end
@@ -1571,7 +1575,7 @@ togglesCrossHair["mira1"] = CrossHairTab:Toggle({
     Callback = function(value)
         if value then
             desactivarOtrosToggles("mira1")
-            activarMiraEnPantalla("7905983439")
+            activarMiraEnPantalla("749187669")
         else
             quitarMiraDePantalla()
         end
@@ -1583,7 +1587,7 @@ togglesCrossHair["mira2"] = CrossHairTab:Toggle({
     Callback = function(value)
         if value then
             desactivarOtrosToggles("mira2")
-            activarMiraEnPantalla("9720078113")
+            activarMiraEnPantalla("11754490336")
         else
             quitarMiraDePantalla()
         end
@@ -1595,7 +1599,7 @@ togglesCrossHair["mira3"] = CrossHairTab:Toggle({
     Callback = function(value)
         if value then
             desactivarOtrosToggles("mira3")
-            activarMiraEnPantalla("10868459554")
+            activarMiraEnPantalla("3750055370")
         else
             quitarMiraDePantalla()
         end
@@ -1607,7 +1611,7 @@ togglesCrossHair["mira4"] = CrossHairTab:Toggle({
     Callback = function(value)
         if value then
             desactivarOtrosToggles("mira4")
-            activarMiraEnPantalla("5998624788")
+            activarMiraEnPantalla("2128690040")
         else
             quitarMiraDePantalla()
         end
@@ -1619,7 +1623,7 @@ togglesCrossHair["mira5"] = CrossHairTab:Toggle({
     Callback = function(value)
         if value then
             desactivarOtrosToggles("mira5")
-            activarMiraEnPantalla("10891594364")
+            activarMiraEnPantalla("5998624788")
         else
             quitarMiraDePantalla()
         end
@@ -1631,7 +1635,7 @@ togglesCrossHair["mira6"] = CrossHairTab:Toggle({
     Callback = function(value)
         if value then
             desactivarOtrosToggles("mira6")
-            activarMiraEnPantalla("11722368344")
+            activarMiraEnPantalla("1827745860")
         else
             quitarMiraDePantalla()
         end
