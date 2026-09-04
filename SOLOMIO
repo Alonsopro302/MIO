@@ -1682,46 +1682,27 @@ AimTab:Dropdown({
     end
 })
 
-
-local function getTeamType(targetPlayer)
-    if not targetPlayer.Team then return "Other" end
-    local teamName = targetPlayer.Team.Name
-    local teamColor = targetPlayer.TeamColor and targetPlayer.TeamColor.Name or ""
-    if teamName == "Guards" or teamColor == "Really blue" or teamColor == "Bright blue" or teamColor == "Deep blue" then
-        return "Guard"
-    elseif teamName == "Criminals" or teamColor == "Really red" then
-        return "Criminal"
-    elseif teamName == "Prisoners" or teamColor == "Bright orange" or teamColor == "Really orange" then
-        return "Prisoner"
-    end
-    return "Other"
-end
-
-        targetPartName = value
-    end
-})
 local espEnabled = false
 local showNames = false
 local showTracers = false
 local teamColors = true
+
 local highlightList = {}
 local nameTexts = {}
 local tracerLines = {}
 local connections = {}
+local teamMarkers = {}
+
 local function getPlayerColor(targetPlayer)
-    if not teamColors then
-        return Color3.fromRGB(255, 0, 0)
-    end
-    local teamType = getTeamType(targetPlayer)
-    if teamType == "Prisoner" then
-        return Color3.fromRGB(255, 165, 0)
-    elseif teamType == "Criminal" then
-        return Color3.fromRGB(255, 0, 0)
-    elseif teamType == "Guard" then
+    if targetPlayer.Team and targetPlayer.Team.Name == "Guards" then
         return Color3.fromRGB(0, 100, 255)
     end
-    return Color3.fromRGB(255, 255, 255)
+    if targetPlayer.TeamColor and targetPlayer.TeamColor.Name == "Really red" then
+        return Color3.fromRGB(255, 0, 0)
+    end
+    return Color3.fromRGB(255, 165, 0)
 end
+
 local function applyHighlight(targetPlayer)
     if targetPlayer == player then return end
     local targetCharacter = targetPlayer.Character
@@ -1735,6 +1716,7 @@ local function applyHighlight(targetPlayer)
     highlight.Parent = targetCharacter
     highlightList[targetPlayer] = highlight
 end
+
 local function removeHighlight(targetPlayer)
     local highlight = highlightList[targetPlayer]
     if highlight then
@@ -1742,12 +1724,14 @@ local function removeHighlight(targetPlayer)
         highlightList[targetPlayer] = nil
     end
 end
+
 local function clearAllHighlights()
     for targetPlayer, highlight in pairs(highlightList) do
         highlight:Destroy()
     end
     highlightList = {}
 end
+
 local function createNameText(targetPlayer)
     if nameTexts[targetPlayer] then return end
     local text = Drawing.new("Text")
@@ -1760,6 +1744,7 @@ local function createNameText(targetPlayer)
     text.Visible = false
     nameTexts[targetPlayer] = text
 end
+
 local function removeNameText(targetPlayer)
     local text = nameTexts[targetPlayer]
     if text then
@@ -1767,6 +1752,7 @@ local function removeNameText(targetPlayer)
         nameTexts[targetPlayer] = nil
     end
 end
+
 local function createTracer(targetPlayer)
     if tracerLines[targetPlayer] then return end
     local line = Drawing.new("Line")
@@ -1776,6 +1762,7 @@ local function createTracer(targetPlayer)
     line.Visible = false
     tracerLines[targetPlayer] = line
 end
+
 local function removeTracer(targetPlayer)
     local line = tracerLines[targetPlayer]
     if line then
@@ -1783,6 +1770,37 @@ local function removeTracer(targetPlayer)
         tracerLines[targetPlayer] = nil
     end
 end
+
+local function createTeamMarker(targetPlayer)
+    if teamMarkers[targetPlayer] then return end
+    local text = Drawing.new("Text")
+    text.Text = ""
+    text.Size = 12
+    text.Center = true
+    text.Outline = true
+    text.OutlineColor = Color3.fromRGB(0, 0, 0)
+    text.Visible = false
+    teamMarkers[targetPlayer] = text
+end
+
+local function removeTeamMarker(targetPlayer)
+    local text = teamMarkers[targetPlayer]
+    if text then
+        text:Destroy()
+        teamMarkers[targetPlayer] = nil
+    end
+end
+
+local function updateTeamMarker(targetPlayer)
+    local text = teamMarkers[targetPlayer]
+    if not text then return end
+    if targetPlayer.Team == player.Team then
+        text.Text = "🟩"
+    else
+        text.Text = "🟥"
+    end
+end
+
 local function clearAllDrawings()
     for targetPlayer in pairs(nameTexts) do
         removeNameText(targetPlayer)
@@ -1790,13 +1808,18 @@ local function clearAllDrawings()
     for targetPlayer in pairs(tracerLines) do
         removeTracer(targetPlayer)
     end
+    for targetPlayer in pairs(teamMarkers) do
+        removeTeamMarker(targetPlayer)
+    end
 end
+
 local function disconnectAll()
     for _, conn in pairs(connections) do
         conn:Disconnect()
     end
     connections = {}
 end
+
 local function updateESP()
     local viewport = Camera.ViewportSize
     local centerBottom = Vector2.new(viewport.X / 2, viewport.Y)
@@ -1860,9 +1883,24 @@ local function updateESP()
                     tracerLines[targetPlayer].Visible = false
                 end
             end
+            if teamColors then
+                local marker = teamMarkers[targetPlayer]
+                if not marker then
+                    createTeamMarker(targetPlayer)
+                    marker = teamMarkers[targetPlayer]
+                end
+                updateTeamMarker(targetPlayer)
+                marker.Position = Vector2.new(pos.X, pos.Y - 45)
+                marker.Visible = true
+            else
+                if teamMarkers[targetPlayer] then
+                    teamMarkers[targetPlayer].Visible = false
+                end
+            end
         end
     end
 end
+
 local function setupESP()
     clearAllHighlights()
     clearAllDrawings()
@@ -1871,11 +1909,13 @@ local function setupESP()
         applyHighlight(targetPlayer)
         createNameText(targetPlayer)
         createTracer(targetPlayer)
+        createTeamMarker(targetPlayer)
     end
     local function onPlayerAdded(targetPlayer)
         applyHighlight(targetPlayer)
         createNameText(targetPlayer)
         createTracer(targetPlayer)
+        createTeamMarker(targetPlayer)
         local charConn
         charConn = targetPlayer.CharacterAdded:Connect(function()
             applyHighlight(targetPlayer)
@@ -1886,6 +1926,7 @@ local function setupESP()
         removeHighlight(targetPlayer)
         removeNameText(targetPlayer)
         removeTracer(targetPlayer)
+        removeTeamMarker(targetPlayer)
         if connections[targetPlayer] then
             connections[targetPlayer]:Disconnect()
             connections[targetPlayer] = nil
@@ -1904,12 +1945,14 @@ local function setupESP()
     end
     RunService:BindToRenderStep("ESPRender", Enum.RenderPriority.Camera.Value, updateESP)
 end
+
 local function disableESP()
     clearAllHighlights()
     clearAllDrawings()
     disconnectAll()
     RunService:UnbindFromRenderStep("ESPRender")
 end
+
 ESPTab:Toggle({
     Title = "Activar ESP",
     Default = false,
@@ -1922,6 +1965,7 @@ ESPTab:Toggle({
         end
     end
 })
+
 ESPTab:Toggle({
     Title = "Mostrar nombres",
     Default = false,
@@ -1935,6 +1979,7 @@ ESPTab:Toggle({
         end
     end
 })
+
 ESPTab:Toggle({
     Title = "Mostrar tracers (líneas)",
     Default = false,
@@ -1948,21 +1993,17 @@ ESPTab:Toggle({
         end
     end
 })
+
 ESPTab:Toggle({
-    Title = "Colores por equipo",
+    Title = "Marcador De Equipos",
     Default = true,
     Callback = function(value)
         teamColors = value
         if not espEnabled then return end
-        for targetPlayer in pairs(highlightList) do
-            if highlightList[targetPlayer] then
-                highlightList[targetPlayer].FillColor = getPlayerColor(targetPlayer)
-            end
-            if nameTexts[targetPlayer] then
-                nameTexts[targetPlayer].Color = getPlayerColor(targetPlayer)
-            end
-            if tracerLines[targetPlayer] then
-                tracerLines[targetPlayer].Color = getPlayerColor(targetPlayer)
+        for targetPlayer in pairs(teamMarkers) do
+            if teamMarkers[targetPlayer] then
+                updateTeamMarker(targetPlayer)
+                teamMarkers[targetPlayer].Visible = value
             end
         end
     end
